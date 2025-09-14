@@ -1,0 +1,80 @@
+<mat-card class="view-card">
+    <mat-card-title>Find Invoice / LR</mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Invoice No</mat-label>
+          <input matInput [(ngModel)]="invoiceNo" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>LR No</mat-label>
+          <input matInput [(ngModel)]="lrNo" />
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" (click)="search()">Search</button>
+      </div>
+  
+      <div *ngIf="loading">Searching…</div>
+  
+      <div *ngIf="results && results.length">
+        <mat-list>
+          <mat-list-item *ngFor="let r of results">
+            <div class="li-left">
+              <div class="title">{{ r.invoiceNo }}</div>
+              <div class="sub">{{ r.partyName }} — {{ r.invoiceDate }}</div>
+            </div>
+            <div class="li-right">
+              <button mat-button (click)="view(r.id!)">View</button>
+              <button mat-button (click)="printPdf(r.id!)">Print PDF</button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+  
+      <div *ngIf="selectedInvoice" class="detail">
+        <h3>Invoice: {{ selectedInvoice.invoiceNo }}</h3>
+        <p><strong>Party:</strong> {{ selectedInvoice.partyName }} <br/>{{ selectedInvoice.partyAddress }}</p>
+        <p><strong>Invoice Date:</strong> {{ selectedInvoice.invoiceDate }}</p>
+  
+        <table mat-table [dataSource]="selectedInvoice.items  || []" class="mat-elevation-z1" style="width:100%">
+          <ng-container matColumnDef="lr">
+            <th mat-header-cell *matHeaderCellDef>LR No</th>
+            <td mat-cell *matCellDef="let it">{{ it.lrNo }}<br/>{{ it.lrDate }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="route">
+            <th mat-header-cell *matHeaderCellDef>Route</th>
+            <td mat-cell *matCellDef="let it">{{ it.fromLocation }} → {{ it.toLocation }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="goods">
+            <th mat-header-cell *matHeaderCellDef>Goods</th>
+            <td mat-cell *matCellDef="let it">{{ it.goodsDescription }}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="vehicle">
+            <th mat-header-cell *matHeaderCellDef>Vehicle</th>
+            <td mat-cell *matCellDef="let it">{{ it.vehicleNumber }} ({{ it.vehicleType }})</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef style="text-align:right">Amount</th>
+            <td mat-cell *matCellDef="let it" style="text-align:right">{{ it.amount | currency:'INR' }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="['lr','route','goods','vehicle','amount']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['lr','route','goods','vehicle','amount'];"></tr>
+        </table>
+  
+        <div class="summary" style="text-align:right;margin-top:12px;">
+          <div>Items Total: {{ selectedInvoice.totalAmount | currency:'INR' }}</div>
+        </div>
+  
+        <div style="margin-top:12px;">
+          <button mat-raised-button color="primary" (click)="printPdf(selectedInvoice.id!)">Open PDF</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  

@@ -1,0 +1,153 @@
+<mat-card class="invoice-card">
+    <mat-card-title>Transporter Invoice</mat-card-title>
+    <mat-card-content>
+  
+      <div class="row">
+        <mat-form-field appearance="outline" class="flex">
+          <mat-label>Invoice No</mat-label>
+          <input matInput [(ngModel)]="invoice.invoiceNo" name="invoiceNo" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Invoice Date</mat-label>
+          <input matInput type="date" [(ngModel)]="invoice.invoiceDate" name="invoiceDate" />
+        </mat-form-field>
+      </div>
+  
+      <!-- Party autocomplete -->
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Party (Client)</mat-label>
+        <input type="text"
+               matInput
+               [(ngModel)]="invoice.partyName"
+               name="partyName"
+               (input)="onPartyInput($any($event.target).value)"
+               [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onClientSelected($event.option.value)" autoActiveFirstOption>
+          <mat-option *ngIf="searching" class="loading-option">
+            <!-- <mat-spinner diameter="20"></mat-spinner> Searching... -->
+          </mat-option>
+          <mat-option *ngFor="let c of (partyOptions$ | async)" [value]="c">
+            <div class="opt-title">{{c.name}}</div>
+            <div class="opt-sub">{{c.address}}</div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+  
+      <div class="row">
+        <mat-form-field appearance="outline" class="flex">
+          <mat-label>Party GST</mat-label>
+          <input matInput [(ngModel)]="invoice.partyGst" name="partyGst" />
+        </mat-form-field>
+  
+        <button mat-stroked-button color="primary" (click)="createClientFromInput()">
+          <mat-icon>person_add</mat-icon> Create Client
+        </button>
+      </div>
+  
+      <mat-divider></mat-divider>
+  
+      <!-- items (LR rows) -->
+      <div class="items">
+        <div *ngFor="let it of invoice.items; let i=index" class="item-row mat-elevation-z1">
+          <div class="item-left">
+            <mat-form-field appearance="fill" class="small">
+              <mat-label>LR No</mat-label>
+              <input matInput [(ngModel)]="it.lrNo" [name]="'lrNo' + i" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>LR Date</mat-label>
+              <input matInput type="date" [(ngModel)]="it.lrDate" [name]="'lrDate' + i" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>From</mat-label>
+              <input matInput [(ngModel)]="it.fromLocation" [name]="'from' + i" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>To</mat-label>
+              <input matInput [(ngModel)]="it.toLocation" [name]="'to' + i" />
+            </mat-form-field>
+          </div>
+  
+          <div class="item-right">
+            <mat-form-field appearance="fill" class="full">
+              <mat-label>Goods Description</mat-label>
+              <input matInput [(ngModel)]="it.goodsDescription" [name]="'desc' + i" />
+            </mat-form-field>
+  
+            <div class="row">
+              <mat-form-field appearance="fill" class="tiny">
+                <mat-label>Pkg Type</mat-label>
+                <input matInput [(ngModel)]="it.packageType" [name]="'ptype' + i" />
+              </mat-form-field>
+  
+              <mat-form-field appearance="fill" class="tiny">
+                <mat-label>Count</mat-label>
+                <input matInput type="number" [(ngModel)]="it.packageCount" [name]="'pcount' + i" />
+              </mat-form-field>
+  
+              <mat-form-field appearance="fill" class="tiny">
+                <mat-label>Vehicle No</mat-label>
+                <input matInput [(ngModel)]="it.vehicleNumber" [name]="'veh' + i" />
+              </mat-form-field>
+  
+              <mat-form-field appearance="fill" class="tiny">
+                <mat-label>Vehicle Type</mat-label>
+                <input matInput [(ngModel)]="it.vehicleType" [name]="'vtype' + i" />
+              </mat-form-field>
+  
+              <mat-form-field appearance="fill" class="amount">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" [(ngModel)]="it.amount" [name]="'amt' + i" />
+              </mat-form-field>
+  
+              <button mat-icon-button color="warn" (click)="removeItem(i)" aria-label="Remove item">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <div class="add-row">
+          <button mat-stroked-button color="primary" (click)="addItem()"><mat-icon>add</mat-icon> Add LR</button>
+        </div>
+      </div>
+  
+      <mat-divider></mat-divider>
+  
+      <div class="charges">
+        <mat-form-field appearance="outline">
+          <mat-label>Halting Charges</mat-label>
+          <input matInput type="number" [(ngModel)]="invoice.haltingCharges" name="halting" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Loading Charges</mat-label>
+          <input matInput type="number" [(ngModel)]="invoice.loadingCharges" name="loading" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Unloading Charges</mat-label>
+          <input matInput type="number" [(ngModel)]="invoice.unloadingCharges" name="unloading" />
+        </mat-form-field>
+  
+        <div class="totals">
+          <div>Items Total: {{ itemsTotal | currency:'INR':'symbol':'1.0-0' }}</div>
+          <div>Grand Total: {{ grandTotal | currency:'INR':'symbol':'1.0-0' }}</div>
+        </div>
+      </div>
+  
+      <mat-divider></mat-divider>
+  
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="save()" [disabled]="saving">
+          <mat-icon>save</mat-icon> {{ saving ? 'Saving...' : 'Save Invoice' }}
+        </button>
+      </div>
+  
+    </mat-card-content>
+  </mat-card>
+  
