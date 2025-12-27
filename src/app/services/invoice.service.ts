@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Client {
   id?: number | null;
@@ -43,7 +44,7 @@ export interface Invoice {
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceService {
-  base = 'http://localhost:8080/api'; // proxied to backend
+  base = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -76,7 +77,7 @@ searchInvoices(invoiceNo?: string, lrNo?: string) {
   
   // for PDF we will open in new tab using URL: /api/invoices/{id}/pdf
   getInvoicePdfUrl(id: number) {
-    return `/api/invoices/${id}/pdf`;
+    return `${this.base}/invoices/${id}/pdf`;
   }
 
   getNextInvoiceNumber() {
@@ -96,11 +97,11 @@ searchInvoices(invoiceNo?: string, lrNo?: string) {
   }
 
   getReportPdfUrl(startDate: string, endDate: string): string {
-    return `/api/reports/invoices/pdf?startDate=${startDate}&endDate=${endDate}`;
+    return `${this.base}/reports/invoices/pdf?startDate=${startDate}&endDate=${endDate}`;
   }
 
   getReportExcelUrl(startDate: string, endDate: string): string {
-    return `/api/reports/invoices/excel?startDate=${startDate}&endDate=${endDate}`;
+    return `${this.base}/reports/invoices/excel?startDate=${startDate}&endDate=${endDate}`;
   }
   
 }
