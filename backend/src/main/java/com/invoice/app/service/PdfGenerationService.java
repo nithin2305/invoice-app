@@ -75,6 +75,10 @@ public class PdfGenerationService {
         companyName.setAlignment(Element.ALIGN_CENTER);
         document.add(companyName);
         
+        Paragraph companyAddr = new Paragraph(COMPANY_ADDRESS, smallFont);
+        companyAddr.setAlignment(Element.ALIGN_CENTER);
+        document.add(companyAddr);
+        
         Paragraph contactInfo = new Paragraph(COMPANY_CONTACT + "     " + COMPANY_EMAIL, smallFont);
         contactInfo.setAlignment(Element.ALIGN_CENTER);
         document.add(contactInfo);
@@ -115,7 +119,6 @@ public class PdfGenerationService {
         
         // Invoice Details Cell (right) - with border
         StringBuilder invoiceDetails = new StringBuilder();
-        invoiceDetails.append(COMPANY_ADDRESS).append("\n");
         invoiceDetails.append("INVOICE  NO : ").append(nullSafe(invoice.getInvoiceNo())).append("\n");
         String dateStr = invoice.getInvoiceDate() != null ? invoice.getInvoiceDate().format(DATE_FORMAT) : "";
         invoiceDetails.append("DATE : ").append(dateStr);
