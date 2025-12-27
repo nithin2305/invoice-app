@@ -10,6 +10,7 @@ import com.invoice.app.entity.InvoiceItem;
 import com.invoice.app.repository.ClientRepository;
 import com.invoice.app.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -93,24 +94,30 @@ public class InvoiceService {
 
     @Transactional(readOnly = true)
     public String getNextInvoiceNumber() {
-        return invoiceRepository.findLatestInvoice()
-                .map(invoice -> {
-                    String lastInvoiceNo = invoice.getInvoiceNo();
-                    try {
-                        // Extract numeric part and increment
-                        String numericPart = lastInvoiceNo.replaceAll("[^0-9]", "");
-                        if (!numericPart.isEmpty()) {
-                            int nextNumber = Integer.parseInt(numericPart) + 1;
-                            // Preserve prefix if exists
-                            String prefix = lastInvoiceNo.replaceAll("[0-9]", "");
-                            return prefix + nextNumber;
-                        }
-                    } catch (NumberFormatException e) {
-                        // If parsing fails, return default
-                    }
-                    return "INV001";
-                })
-                .orElse("INV001");
+        List<Invoice> latestInvoices = invoiceRepository.findLatestInvoice(PageRequest.of(0, 1));
+        
+        if (latestInvoices.isEmpty()) {
+            return "INV001";
+        }
+        
+        Invoice invoice = latestInvoices.get(0);
+        String lastInvoiceNo = invoice.getInvoiceNo();
+        try {
+            // Extract prefix and numeric part
+            String numericPart = lastInvoiceNo.replaceAll("[^0-9]", "");
+            String prefix = lastInvoiceNo.replaceAll("[0-9]", "");
+            
+            if (!numericPart.isEmpty()) {
+                int nextNumber = Integer.parseInt(numericPart) + 1;
+                // Preserve leading zeros by maintaining the same length
+                int numLength = numericPart.length();
+                String format = "%0" + numLength + "d";
+                return prefix + String.format(format, nextNumber);
+            }
+        } catch (NumberFormatException e) {
+            // If parsing fails, return default
+        }
+        return "INV001";
     }
 
     @Transactional

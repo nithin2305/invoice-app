@@ -4,7 +4,6 @@ import { InvoiceService, Invoice, InvoiceItem, Client } from '../../services/inv
 import { Subject, Observable, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-invoice-form',
@@ -46,8 +45,7 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
     private svc: InvoiceService, 
     private snack: MatSnackBar,
     private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -242,18 +240,26 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
   }
 
   showPrintOptions(invoiceId: number) {
-    const result = confirm('Invoice saved successfully! Do you want to print the invoice now?');
-    if (result) {
+    // Show snackbar with print action
+    const snackBarRef = this.snack.open('Invoice saved successfully!', 'Print Now', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top'
+    });
+
+    snackBarRef.onAction().subscribe(() => {
       const url = this.svc.getInvoicePdfUrl(invoiceId);
       window.open(url, '_blank');
-    }
+    });
     
     // Reset form after save
     if (!this.editInvoiceId) {
       this.resetForm();
     } else {
       // In edit mode, navigate back home or to invoice list
-      this.router.navigate(['/']);
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 5000);
     }
   }
 
