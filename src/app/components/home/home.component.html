@@ -22,6 +22,14 @@
       </mat-card-content>
     </mat-card>
 
+    <mat-card class="action-card" (click)="openViewPrintInvoice()">
+      <mat-card-content>
+        <span class="action-icon">🖨️</span>
+        <h2>View / Print Invoice</h2>
+        <p>Search and print an invoice</p>
+      </mat-card-content>
+    </mat-card>
+
     <mat-card class="action-card" (click)="navigateTo('/clients')">
       <mat-card-content>
         <span class="action-icon">👥</span>
@@ -35,6 +43,56 @@
         <span class="action-icon">📊</span>
         <h2>Reports</h2>
         <p>Generate PDF or Excel reports</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- View/Print Invoice Search Section -->
+  <div class="search-section" *ngIf="showSearchSection">
+    <mat-card>
+      <mat-card-title>
+        <span class="section-icon">🔍</span> Search Invoice
+        <button mat-icon-button class="close-btn" (click)="closeSearchSection()">✕</button>
+      </mat-card-title>
+      <mat-card-content>
+        <div class="search-form">
+          <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Enter Invoice Number</mat-label>
+            <input matInput [(ngModel)]="searchInvoiceNo" 
+                   (keyup.enter)="searchInvoice()"
+                   placeholder="e.g., 2902" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="searchInvoice()" [disabled]="searching">
+            🔍 {{ searching ? 'Searching...' : 'Search' }}
+          </button>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results" *ngIf="searchResult">
+          <mat-card class="result-card">
+            <mat-card-title>Invoice #{{ searchResult.invoiceNo }}</mat-card-title>
+            <mat-card-subtitle>{{ searchResult.invoiceDate }}</mat-card-subtitle>
+            <mat-card-content>
+              <p><strong>Party:</strong> {{ searchResult.partyName }}</p>
+              <p><strong>Total Amount:</strong> {{ searchResult.totalAmount | currency:'INR':'symbol':'1.0-0' }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary" (click)="downloadSearchResultPdf()">
+                📄 PDF
+              </button>
+              <button mat-raised-button color="accent" (click)="downloadSearchResultExcel()">
+                📊 Excel
+              </button>
+              <button mat-stroked-button color="primary" (click)="viewPrintPreview()">
+                🖨️ Print Preview
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="no-results" *ngIf="searchError">
+          <p>{{ searchError }}</p>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

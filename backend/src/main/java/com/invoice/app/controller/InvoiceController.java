@@ -3,6 +3,7 @@ package com.invoice.app.controller;
 import com.invoice.app.dto.InvoiceDTO;
 import com.invoice.app.dto.MonthlyStatementDTO;
 import com.invoice.app.entity.Invoice;
+import com.invoice.app.service.ExcelGenerationService;
 import com.invoice.app.service.InvoiceService;
 import com.invoice.app.service.PdfGenerationService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class InvoiceController {
 
     private final InvoiceService invoiceService;
     private final PdfGenerationService pdfGenerationService;
+    private final ExcelGenerationService excelGenerationService;
 
     @PostMapping
     public ResponseEntity<InvoiceDTO> createInvoice(@RequestBody InvoiceDTO invoiceDTO) {
@@ -73,5 +75,20 @@ public class InvoiceController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(pdfBytes);
+    }
+
+    @GetMapping("/{id}/excel")
+    public ResponseEntity<byte[]> getInvoiceExcel(@PathVariable Long id) {
+        Invoice invoice = invoiceService.getInvoiceEntity(id);
+        byte[] excelBytes = excelGenerationService.generateSingleInvoiceExcel(invoice);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        headers.setContentDispositionFormData("attachment", "invoice-" + invoice.getInvoiceNo() + ".xlsx");
+        headers.setContentLength(excelBytes.length);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
     }
 }

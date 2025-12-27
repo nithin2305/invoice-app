@@ -34,6 +34,10 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
   searchInvoiceNo = '';
   searchingInvoice = false;
 
+  // For post-save download options
+  savedInvoiceId: number | null = null;
+  showDownloadOptions = false;
+
   // autocomplete streams
   private partySearch$ = new Subject<string>();
   partyOptions$: Observable<Client[]> = of([]);
@@ -240,27 +244,42 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
   }
 
   showPrintOptions(invoiceId: number) {
-    // Show snackbar with print action
-    const snackBarRef = this.snack.open('Invoice saved successfully!', 'Print Now', {
-      duration: 5000,
+    // Store saved invoice ID and show download options
+    this.savedInvoiceId = invoiceId;
+    this.showDownloadOptions = true;
+    
+    // Show snackbar notification
+    this.snack.open('Invoice saved successfully! Choose a download format below.', 'Close', {
+      duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top'
     });
+  }
 
-    snackBarRef.onAction().subscribe(() => {
-      const url = this.svc.getInvoicePdfUrl(invoiceId);
+  downloadPdf() {
+    if (this.savedInvoiceId) {
+      const url = this.svc.getInvoicePdfUrl(this.savedInvoiceId);
       window.open(url, '_blank');
-    });
-    
-    // Reset form after save
-    if (!this.editInvoiceId) {
-      this.resetForm();
-    } else {
-      // In edit mode, navigate back home or to invoice list
-      setTimeout(() => {
-        this.router.navigate(['/']);
-      }, 5000);
     }
+  }
+
+  downloadExcel() {
+    if (this.savedInvoiceId) {
+      const url = this.svc.getInvoiceExcelUrl(this.savedInvoiceId);
+      window.open(url, '_blank');
+    }
+  }
+
+  viewPrintPreview() {
+    if (this.savedInvoiceId) {
+      this.router.navigate(['/invoice', this.savedInvoiceId, 'print']);
+    }
+  }
+
+  createNewInvoice() {
+    this.showDownloadOptions = false;
+    this.savedInvoiceId = null;
+    this.resetForm();
   }
 
   resetForm() {

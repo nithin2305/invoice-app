@@ -168,6 +168,29 @@
           ❌ Cancel
         </button>
       </div>
+
+      <!-- Download Options Section (shown after save) -->
+      <div class="download-section" *ngIf="showDownloadOptions">
+        <mat-divider></mat-divider>
+        <h3>📥 Download Invoice</h3>
+        <p class="download-hint">Invoice saved successfully! Download in your preferred format:</p>
+        <div class="download-buttons">
+          <button mat-raised-button color="primary" (click)="downloadPdf()">
+            📄 Download PDF
+          </button>
+          <button mat-raised-button color="accent" (click)="downloadExcel()">
+            📊 Download Excel
+          </button>
+          <button mat-stroked-button color="primary" (click)="viewPrintPreview()">
+            🖨️ View / Print
+          </button>
+        </div>
+        <div class="new-invoice-action">
+          <button mat-button color="primary" (click)="createNewInvoice()">
+            ➕ Create New Invoice
+          </button>
+        </div>
+      </div>
       
       </div><!-- Close invoice-form div -->
   

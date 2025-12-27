@@ -80,6 +80,11 @@ searchInvoices(invoiceNo?: string, lrNo?: string) {
     return `${this.base}/invoices/${id}/pdf`;
   }
 
+  // for Excel we will download using URL: /api/invoices/{id}/excel
+  getInvoiceExcelUrl(id: number) {
+    return `${this.base}/invoices/${id}/excel`;
+  }
+
   getNextInvoiceNumber() {
     return this.http.get(`${this.base}/invoices/next-number`, { responseType: 'text' });
   }

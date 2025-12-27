@@ -45,3 +45,25 @@ mat-form-field {
   background: #555;
 }
 
+/* Global Print Styles - A4 optimization */
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide non-essential elements during print */
+  mat-toolbar,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure proper page sizing */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+}
+
