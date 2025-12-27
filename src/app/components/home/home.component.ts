@@ -23,18 +23,20 @@ export class HomeComponent {
     this.router.navigate([route]);
   }
 
-  openViewPrintInvoice() {
-    this.showSearchSection = true;
+  private resetSearchState() {
     this.searchResult = null;
     this.searchError = '';
     this.searchInvoiceNo = '';
   }
 
+  openViewPrintInvoice() {
+    this.showSearchSection = true;
+    this.resetSearchState();
+  }
+
   closeSearchSection() {
     this.showSearchSection = false;
-    this.searchResult = null;
-    this.searchError = '';
-    this.searchInvoiceNo = '';
+    this.resetSearchState();
   }
 
   searchInvoice() {
@@ -64,17 +66,19 @@ export class HomeComponent {
     });
   }
 
+  private openDownloadUrl(url: string) {
+    window.open(url, '_blank');
+  }
+
   downloadSearchResultPdf() {
     if (this.searchResult?.id) {
-      const url = this.invoiceService.getInvoicePdfUrl(this.searchResult.id);
-      window.open(url, '_blank');
+      this.openDownloadUrl(this.invoiceService.getInvoicePdfUrl(this.searchResult.id));
     }
   }
 
   downloadSearchResultExcel() {
     if (this.searchResult?.id) {
-      const url = this.invoiceService.getInvoiceExcelUrl(this.searchResult.id);
-      window.open(url, '_blank');
+      this.openDownloadUrl(this.invoiceService.getInvoiceExcelUrl(this.searchResult.id));
     }
   }
 

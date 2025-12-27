@@ -256,17 +256,19 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  private openDownloadUrl(url: string) {
+    window.open(url, '_blank');
+  }
+
   downloadPdf() {
     if (this.savedInvoiceId) {
-      const url = this.svc.getInvoicePdfUrl(this.savedInvoiceId);
-      window.open(url, '_blank');
+      this.openDownloadUrl(this.svc.getInvoicePdfUrl(this.savedInvoiceId));
     }
   }
 
   downloadExcel() {
     if (this.savedInvoiceId) {
-      const url = this.svc.getInvoiceExcelUrl(this.savedInvoiceId);
-      window.open(url, '_blank');
+      this.openDownloadUrl(this.svc.getInvoiceExcelUrl(this.savedInvoiceId));
     }
   }
 
@@ -276,9 +278,13 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  createNewInvoice() {
+  private resetDownloadState() {
     this.showDownloadOptions = false;
     this.savedInvoiceId = null;
+  }
+
+  createNewInvoice() {
+    this.resetDownloadState();
     this.resetForm();
   }
 
