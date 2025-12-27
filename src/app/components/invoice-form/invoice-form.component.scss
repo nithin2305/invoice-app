@@ -1,18 +1,175 @@
-.invoice-card { max-width: 1100px; margin: 18px auto; padding: 12px; }
-.row { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
-.flex { flex:1; }
-.full { width:100%; }
-.small { width:140px; }
-.tiny { width:120px; }
-.amount { width:160px; }
-.items { margin-top:12px; }
-.item-row { display:flex; gap:12px; padding:12px; border-radius:8px; margin-bottom:10px; }
-.item-left { flex:1; display:flex; gap:10px; align-items:center; }
-.item-right { flex:1; display:flex; flex-direction:column; gap:8px; }
-.add-row { margin-top:8px; }
-.charges { display:flex; gap:12px; align-items:center; margin-top:12px; }
-.totals { margin-left: auto; text-align:right; font-weight:600; }
-.actions { margin-top:12px; text-align:right; }
-.loading-option { display:flex; align-items:center; gap:8px; padding:8px; }
-.opt-title { font-weight:600; }
-.opt-sub { font-size: 12px; color: gray; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 360px; }
+.invoice-card { 
+  max-width: 1100px; 
+  margin: 18px auto; 
+  padding: 12px; 
+}
+
+.edit-search {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.search-field {
+  flex: 1;
+  margin-bottom: 0 !important;
+}
+
+.invoice-form {
+  margin-top: 10px;
+}
+
+.row { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  margin-bottom: 12px; 
+}
+
+.flex { flex: 1; }
+.full { width: 100%; }
+.small { width: 140px; }
+.tiny { width: 120px; }
+.amount { width: 160px; }
+.items { margin-top: 12px; }
+
+.item-row { 
+  display: flex; 
+  gap: 12px; 
+  padding: 12px; 
+  border-radius: 8px; 
+  margin-bottom: 10px; 
+}
+
+.item-left { 
+  flex: 1; 
+  display: flex; 
+  gap: 10px; 
+  align-items: center; 
+}
+
+.item-right { 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
+
+.add-row { margin-top: 8px; }
+
+.charges { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  margin-top: 12px; 
+}
+
+.totals { 
+  margin-left: auto; 
+  text-align: right; 
+  font-weight: 600; 
+}
+
+.actions { 
+  margin-top: 12px; 
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.loading-option { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 8px; 
+}
+
+.opt-title { font-weight: 600; }
+
+.opt-sub { 
+  font-size: 12px; 
+  color: gray; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  max-width: 360px; 
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .invoice-card {
+    margin: 10px;
+    padding: 8px;
+  }
+
+  .edit-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-search button {
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .flex, .small, .tiny, .amount {
+    width: 100%;
+  }
+
+  .item-row {
+    flex-direction: column;
+  }
+
+  .item-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .charges {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .totals {
+    margin-left: 0;
+    text-align: left;
+    margin-top: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .opt-sub {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoice-card {
+    margin: 5px;
+    padding: 5px;
+  }
+
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  .item-row {
+    padding: 8px;
+  }
+}
+

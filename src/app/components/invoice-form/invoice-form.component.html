@@ -1,6 +1,24 @@
 <mat-card class="invoice-card">
-    <mat-card-title>Transporter Invoice</mat-card-title>
+    <mat-card-title>
+      {{ isEditMode ? 'Modify Invoice' : 'Create New Invoice' }}
+    </mat-card-title>
     <mat-card-content>
+  
+      <!-- Search for invoice in edit mode -->
+      <div class="edit-search" *ngIf="isEditMode && !editInvoiceId">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Enter Invoice Number to Edit</mat-label>
+          <input matInput [(ngModel)]="searchInvoiceNo" name="searchInvoiceNo" 
+                 (keyup.enter)="searchInvoiceForEdit()" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchInvoiceForEdit()" 
+                [disabled]="searchingInvoice">
+          <mat-icon>search</mat-icon> {{ searchingInvoice ? 'Searching...' : 'Load Invoice' }}
+        </button>
+      </div>
+
+      <!-- Invoice form (shown in new mode or after loading invoice in edit mode) -->
+      <div *ngIf="!isEditMode || editInvoiceId" class="invoice-form">
   
       <div class="row">
         <mat-form-field appearance="outline" class="flex">
@@ -144,9 +162,14 @@
   
       <div class="actions">
         <button mat-flat-button color="primary" (click)="save()" [disabled]="saving">
-          <mat-icon>save</mat-icon> {{ saving ? 'Saving...' : 'Save Invoice' }}
+          <mat-icon>save</mat-icon> {{ saving ? 'Saving...' : (editInvoiceId ? 'Update Invoice' : 'Save Invoice') }}
+        </button>
+        <button mat-stroked-button (click)="resetForm()" *ngIf="editInvoiceId">
+          <mat-icon>cancel</mat-icon> Cancel
         </button>
       </div>
+      
+      </div><!-- Close invoice-form div -->
   
     </mat-card-content>
   </mat-card>

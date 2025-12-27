@@ -10,6 +10,7 @@ import com.invoice.app.entity.InvoiceItem;
 import com.invoice.app.repository.ClientRepository;
 import com.invoice.app.repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -89,6 +90,75 @@ public class InvoiceService {
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public String getNextInvoiceNumber() {
+        List<Invoice> latestInvoices = invoiceRepository.findLatestInvoice(PageRequest.of(0, 1));
+        
+        if (latestInvoices.isEmpty()) {
+            return "INV001";
+        }
+        
+        Invoice invoice = latestInvoices.get(0);
+        String lastInvoiceNo = invoice.getInvoiceNo();
+        try {
+            // Extract prefix and numeric part
+            String numericPart = lastInvoiceNo.replaceAll("[^0-9]", "");
+            String prefix = lastInvoiceNo.replaceAll("[0-9]", "");
+            
+            if (!numericPart.isEmpty()) {
+                int nextNumber = Integer.parseInt(numericPart) + 1;
+                // Preserve leading zeros by maintaining the same length
+                int numLength = numericPart.length();
+                String format = "%0" + numLength + "d";
+                return prefix + String.format(format, nextNumber);
+            }
+        } catch (NumberFormatException e) {
+            // If parsing fails, return default
+        }
+        return "INV001";
+    }
+
+    @Transactional
+    public InvoiceDTO updateInvoice(Long id, InvoiceDTO dto) {
+        Invoice existing = invoiceRepository.findById(id)
+                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Invoice not found: " + id));
+        
+        // Update fields
+        existing.setInvoiceNo(dto.getInvoiceNo());
+        
+        if (dto.getInvoiceDate() != null && !dto.getInvoiceDate().isEmpty()) {
+            existing.setInvoiceDate(LocalDate.parse(dto.getInvoiceDate()));
+        }
+        
+        // Link party if partyId is provided
+        if (dto.getPartyId() != null) {
+            Client party = clientRepository.findById(dto.getPartyId()).orElse(null);
+            existing.setParty(party);
+        }
+        
+        existing.setPartyName(dto.getPartyName());
+        existing.setPartyAddress(dto.getPartyAddress());
+        existing.setPartyGst(dto.getPartyGst());
+        existing.setHaltingCharges(nullSafe(dto.getHaltingCharges()));
+        existing.setLoadingCharges(nullSafe(dto.getLoadingCharges()));
+        existing.setUnloadingCharges(nullSafe(dto.getUnloadingCharges()));
+        existing.setTotalAmount(nullSafe(dto.getTotalAmount()));
+        existing.setAmountInWords(dto.getAmountInWords());
+        existing.setRemarks(dto.getRemarks());
+        
+        // Update items - clear and re-add
+        existing.getItems().clear();
+        if (dto.getItems() != null) {
+            for (InvoiceItemDTO itemDTO : dto.getItems()) {
+                InvoiceItem item = toItemEntity(itemDTO);
+                existing.addItem(item);
+            }
+        }
+        
+        Invoice saved = invoiceRepository.save(existing);
+        return toDTO(saved);
     }
 
     @Transactional(readOnly = true)

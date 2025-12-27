@@ -16,16 +16,26 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
 import { InvoiceFormComponent } from './components/invoice-form/invoice-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
 import { InvoiceViewComponent } from './components/invoice-view/invoice-view.component';
 import { InvoicePdfComponent } from './components/invoice-pdf/invoice-pdf.component';
+import { HomeComponent } from './components/home/home.component';
+import { ClientManagementComponent } from './components/client-management/client-management.component';
+import { ReportsComponent } from './components/reports/reports.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 const routes: Routes = [
-  { path: '', component: InvoiceFormComponent }, // default route
+  { path: '', component: HomeComponent }, // Home page as default
+  { path: 'invoice/new', component: InvoiceFormComponent }, // Create new invoice
+  { path: 'invoice/edit', component: InvoiceFormComponent }, // Edit invoice
+  { path: 'clients', component: ClientManagementComponent }, // Client management
+  { path: 'reports', component: ReportsComponent }, // Reports
   { path: 'invoices', component: InvoiceViewComponent },     // list/search page
   { path: 'invoice/:id/pdf', component: InvoicePdfComponent }, // PDF viewer route
   { path: '**', redirectTo: '' } // fallback
@@ -37,6 +47,9 @@ const routes: Routes = [
     InvoiceListComponent,
     InvoiceViewComponent,
     InvoicePdfComponent,
+    HomeComponent,
+    ClientManagementComponent,
+    ReportsComponent,
     SafeUrlPipe
   ],
   imports: [
@@ -56,6 +69,9 @@ const routes: Routes = [
         MatListModule,
         MatSnackBarModule,
         MatAutocompleteModule,
+        MatDialogModule,
+        MatTooltipModule,
+        MatMenuModule,
         RouterModule.forRoot(routes)
 
   ],

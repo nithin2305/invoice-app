@@ -1,0 +1,161 @@
+.client-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-card {
+  margin-bottom: 20px;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.title-row h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.form-card {
+  margin-bottom: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.list-card {
+  margin-top: 20px;
+}
+
+.loading, .empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.client-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  transition: box-shadow 0.2s;
+}
+
+.client-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.client-info {
+  flex: 1;
+}
+
+.client-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #1976d2;
+}
+
+.client-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.client-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.client-details span {
+  color: #555;
+}
+
+.client-actions {
+  display: flex;
+  gap: 5px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .client-management-container {
+    padding: 10px;
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .title-row h1 {
+    font-size: 1.5rem;
+  }
+
+  .title-row button {
+    width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .client-actions {
+    align-self: flex-end;
+  }
+
+  .client-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-row h1 {
+    font-size: 1.3rem;
+  }
+
+  .client-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
