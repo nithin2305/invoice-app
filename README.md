@@ -2,6 +2,13 @@
 
 A logistics invoice application with Angular frontend and Spring Boot backend.
 
+## 🚀 Deployment
+
+- **Frontend**: Deployed on [Netlify](https://www.netlify.com/) 
+- **Backend**: Ready for deployment on [Render.com](https://render.com/) (Free tier)
+
+👉 **See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete backend deployment instructions.**
+
 ## Project Structure
 
 ```
