@@ -1,0 +1,44 @@
+<div class="reports-container">
+  <mat-card>
+    <mat-card-title>
+      <h1>Invoice Reports</h1>
+    </mat-card-title>
+    <mat-card-content>
+      <p class="description">Generate comprehensive reports of your invoices in PDF or Excel format.</p>
+
+      <div class="report-form">
+        <div class="date-fields">
+          <mat-form-field appearance="outline">
+            <mat-label>Start Date</mat-label>
+            <input matInput type="date" [(ngModel)]="startDate" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>End Date</mat-label>
+            <input matInput type="date" [(ngModel)]="endDate" />
+          </mat-form-field>
+        </div>
+
+        <div class="report-info">
+          <mat-icon>info</mat-icon>
+          <p>
+            Reports include: Invoice Date, LR Number, Invoice Number, Client Name, 
+            GST Number, From/To locations, Description, and Amount with totals.
+          </p>
+        </div>
+
+        <div class="download-actions">
+          <button mat-raised-button color="primary" (click)="downloadPdf()">
+            <mat-icon>picture_as_pdf</mat-icon>
+            Download PDF
+          </button>
+
+          <button mat-raised-button color="accent" (click)="downloadExcel()">
+            <mat-icon>table_chart</mat-icon>
+            Download Excel
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

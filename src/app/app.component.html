@@ -1,17 +1,57 @@
-<mat-toolbar color="primary">
-  <span>Invoice Desk</span>
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-icon-button class="menu-icon" (click)="0" aria-label="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <span class="app-title" routerLink="/">Invoice Desk</span>
   <span class="spacer"></span>
 
-  <!-- simple navigation -->
-  <a mat-button routerLink="/">New Invoice</a>
-  <a mat-button routerLink="/invoices">Search Invoices</a>
+  <!-- Navigation for desktop -->
+  <div class="desktop-nav">
+    <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon>home</mat-icon> Home
+    </a>
+    <a mat-button routerLink="/invoice/new" routerLinkActive="active-link">
+      <mat-icon>add_circle</mat-icon> New Invoice
+    </a>
+    <a mat-button routerLink="/invoice/edit" routerLinkActive="active-link">
+      <mat-icon>edit</mat-icon> Modify
+    </a>
+    <a mat-button routerLink="/clients" routerLinkActive="active-link">
+      <mat-icon>people</mat-icon> Clients
+    </a>
+    <a mat-button routerLink="/reports" routerLinkActive="active-link">
+      <mat-icon>assessment</mat-icon> Reports
+    </a>
+  </div>
 
-  <button mat-icon-button aria-label="refresh" (click)="0">
-    <mat-icon>refresh</mat-icon>
+  <!-- Mobile menu icon -->
+  <button mat-icon-button class="mobile-menu-icon" [matMenuTriggerFor]="menu" aria-label="menu">
+    <mat-icon>more_vert</mat-icon>
   </button>
 </mat-toolbar>
+
+<!-- Mobile menu -->
+<mat-menu #menu="matMenu">
+  <a mat-menu-item routerLink="/">
+    <mat-icon>home</mat-icon> Home
+  </a>
+  <a mat-menu-item routerLink="/invoice/new">
+    <mat-icon>add_circle</mat-icon> New Invoice
+  </a>
+  <a mat-menu-item routerLink="/invoice/edit">
+    <mat-icon>edit</mat-icon> Modify Invoice
+  </a>
+  <a mat-menu-item routerLink="/clients">
+    <mat-icon>people</mat-icon> Clients
+  </a>
+  <a mat-menu-item routerLink="/reports">
+    <mat-icon>assessment</mat-icon> Reports
+  </a>
+</mat-menu>
 
 <!-- page content will come from the router -->
 <div class="page">
   <router-outlet></router-outlet>
 </div>
+

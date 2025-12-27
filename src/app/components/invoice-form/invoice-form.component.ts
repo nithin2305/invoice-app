@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceService, Invoice, InvoiceItem, Client } from '../../services/invoice.service';
 import { Subject, Observable, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-invoice-form',
@@ -26,6 +28,13 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
     items: [{ lrNo: '', lrDate: '', fromLocation: '', toLocation: '', goodsDescription: '', packageType: '', packageCount: 0, vehicleNumber: '', vehicleType: '', amount: 0 }]
   };
 
+  isEditMode = false;
+  editInvoiceId: number | null = null;
+  
+  // For modify mode
+  searchInvoiceNo = '';
+  searchingInvoice = false;
+
   // autocomplete streams
   private partySearch$ = new Subject<string>();
   partyOptions$: Observable<Client[]> = of([]);
@@ -33,9 +42,27 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
   saving = false;
   searching = false;
 
-  constructor(private svc: InvoiceService, private snack: MatSnackBar) {}
+  constructor(
+    private svc: InvoiceService, 
+    private snack: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
+    // Check if we're in edit or new mode based on route
+    this.route.url.subscribe(segments => {
+      const path = segments.map(s => s.path).join('/');
+      this.isEditMode = path.includes('edit');
+      
+      if (!this.isEditMode) {
+        // New invoice mode - set system date and get next invoice number
+        this.setSystemDate();
+        this.loadNextInvoiceNumber();
+      }
+    });
+
     this.partyOptions$ = this.partySearch$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -55,6 +82,67 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  setSystemDate() {
+    const today = new Date();
+    this.invoice.invoiceDate = today.toISOString().split('T')[0];
+  }
+
+  loadNextInvoiceNumber() {
+    this.svc.getNextInvoiceNumber().subscribe({
+      next: (nextNo) => {
+        this.invoice.invoiceNo = nextNo;
+      },
+      error: (err) => {
+        console.error('Failed to get next invoice number', err);
+        this.invoice.invoiceNo = 'INV001';
+      }
+    });
+  }
+
+  searchInvoiceForEdit() {
+    if (!this.searchInvoiceNo || this.searchInvoiceNo.trim() === '') {
+      this.snack.open('Please enter invoice number', 'OK', { duration: 2000 });
+      return;
+    }
+
+    this.searchingInvoice = true;
+    this.svc.searchInvoices(this.searchInvoiceNo.trim()).subscribe({
+      next: (results) => {
+        this.searchingInvoice = false;
+        if (results && results.length > 0) {
+          const inv = results[0];
+          if (inv.id) {
+            this.loadInvoiceForEdit(inv.id);
+          }
+        } else {
+          this.snack.open('Invoice not found', 'OK', { duration: 2000 });
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.searchingInvoice = false;
+        this.snack.open('Search failed', 'OK', { duration: 2000 });
+      }
+    });
+  }
+
+  loadInvoiceForEdit(id: number) {
+    this.svc.getInvoice(id).subscribe({
+      next: (inv) => {
+        this.editInvoiceId = id;
+        this.invoice = { ...inv };
+        if (!this.invoice.items || this.invoice.items.length === 0) {
+          this.invoice.items = [{ lrNo: '', lrDate: '', fromLocation: '', toLocation: '', goodsDescription: '', packageType: '', packageCount: 0, vehicleNumber: '', vehicleType: '', amount: 0 }];
+        }
+        this.snack.open('Invoice loaded for editing', 'Close', { duration: 2000 });
+      },
+      error: (err) => {
+        console.error(err);
+        this.snack.open('Failed to load invoice', 'Close', { duration: 3000 });
+      }
+    });
   }
 
   onPartyInput(v: string) {
@@ -131,12 +219,19 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
     }
     this.syncTotalBeforeSave();
     this.saving = true;
-    this.svc.createInvoice(this.invoice).subscribe({
+
+    const saveObs = this.editInvoiceId 
+      ? this.svc.updateInvoice(this.editInvoiceId, this.invoice)
+      : this.svc.createInvoice(this.invoice);
+
+    saveObs.subscribe({
       next: (res: any) => {
         this.saving = false;
-        this.snack.open('Invoice saved (id: ' + res.id + ')', 'close', { duration: 3000 });
-        // reset form but keep one empty row
-        this.resetForm();
+        const action = this.editInvoiceId ? 'updated' : 'saved';
+        this.snack.open(`Invoice ${action} (id: ${res.id})`, 'close', { duration: 3000 });
+        
+        // Show print options popup
+        this.showPrintOptions(res.id);
       },
       error: (err) => {
         console.error(err);
@@ -144,6 +239,22 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
         this.snack.open('Save failed', 'retry', { duration: 3000 });
       }
     });
+  }
+
+  showPrintOptions(invoiceId: number) {
+    const result = confirm('Invoice saved successfully! Do you want to print the invoice now?');
+    if (result) {
+      const url = this.svc.getInvoicePdfUrl(invoiceId);
+      window.open(url, '_blank');
+    }
+    
+    // Reset form after save
+    if (!this.editInvoiceId) {
+      this.resetForm();
+    } else {
+      // In edit mode, navigate back home or to invoice list
+      this.router.navigate(['/']);
+    }
   }
 
   resetForm() {
@@ -162,5 +273,13 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
       remarks: '',
       items: [{ lrNo: '', lrDate: '', fromLocation: '', toLocation: '', goodsDescription: '', packageType: '', packageCount: 0, vehicleNumber: '', vehicleType: '', amount: 0 }]
     };
+    this.editInvoiceId = null;
+    this.searchInvoiceNo = '';
+    
+    // Reload defaults for new invoice
+    if (!this.isEditMode) {
+      this.setSystemDate();
+      this.loadNextInvoiceNumber();
+    }
   }
 }

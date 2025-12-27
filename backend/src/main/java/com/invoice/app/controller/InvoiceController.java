@@ -48,6 +48,18 @@ public class InvoiceController {
         return ResponseEntity.ok(invoices);
     }
 
+    @GetMapping("/next-number")
+    public ResponseEntity<String> getNextInvoiceNumber() {
+        String nextNumber = invoiceService.getNextInvoiceNumber();
+        return ResponseEntity.ok(nextNumber);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<InvoiceDTO> updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoiceDTO) {
+        InvoiceDTO updated = invoiceService.updateInvoice(id, invoiceDTO);
+        return ResponseEntity.ok(updated);
+    }
+
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> getInvoicePdf(@PathVariable Long id) {
         Invoice invoice = invoiceService.getInvoiceEntity(id);

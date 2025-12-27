@@ -1,0 +1,85 @@
+<div class="client-management-container">
+  <mat-card class="header-card">
+    <mat-card-title>
+      <div class="title-row">
+        <h1>Client Management</h1>
+        <button mat-raised-button color="primary" (click)="startNewClient()">
+          <mat-icon>add</mat-icon> Add New Client
+        </button>
+      </div>
+    </mat-card-title>
+  </mat-card>
+
+  <!-- Client Form -->
+  <mat-card class="form-card" *ngIf="isNewClient || editingClient">
+    <mat-card-title>{{ isNewClient ? 'New Client' : 'Edit Client' }}</mat-card-title>
+    <mat-card-content>
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Client Name *</mat-label>
+          <input matInput [(ngModel)]="newClient.name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Address</mat-label>
+          <textarea matInput [(ngModel)]="newClient.address" rows="3"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>GST Number</mat-label>
+          <input matInput [(ngModel)]="newClient.gstNumber" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput [(ngModel)]="newClient.phone" type="tel" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="newClient.email" type="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" (click)="saveClient()">
+          <mat-icon>save</mat-icon> Save
+        </button>
+        <button mat-stroked-button (click)="cancelEdit()">
+          <mat-icon>cancel</mat-icon> Cancel
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Client List -->
+  <mat-card class="list-card">
+    <mat-card-title>All Clients</mat-card-title>
+    <mat-card-content>
+      <div *ngIf="loading" class="loading">Loading clients...</div>
+      
+      <div *ngIf="!loading && clients.length === 0" class="empty-state">
+        <p>No clients found. Add your first client to get started.</p>
+      </div>
+
+      <div class="client-list" *ngIf="!loading && clients.length > 0">
+        <div class="client-item" *ngFor="let client of clients">
+          <div class="client-info">
+            <h3>{{ client.name }}</h3>
+            <p *ngIf="client.address">{{ client.address }}</p>
+            <div class="client-details">
+              <span *ngIf="client.gstNumber"><strong>GST:</strong> {{ client.gstNumber }}</span>
+              <span *ngIf="client.phone"><strong>Phone:</strong> {{ client.phone }}</span>
+              <span *ngIf="client.email"><strong>Email:</strong> {{ client.email }}</span>
+            </div>
+          </div>
+          <div class="client-actions">
+            <button mat-icon-button color="primary" (click)="editClient(client)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

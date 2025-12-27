@@ -26,4 +26,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     @Query("SELECT i FROM Invoice i WHERE YEAR(i.invoiceDate) = :year AND MONTH(i.invoiceDate) = :month ORDER BY i.invoiceDate")
     List<Invoice> findByYearAndMonth(@Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT i FROM Invoice i ORDER BY i.id DESC LIMIT 1")
+    Optional<Invoice> findLatestInvoice();
 }

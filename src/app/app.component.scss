@@ -8,6 +8,66 @@
   min-height: calc(100vh - 64px);
 }
 
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.app-title {
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.menu-icon {
+  margin-right: 10px;
+  display: none;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: 5px;
+}
+
+.mobile-menu-icon {
+  display: none;
+}
+
 a[mat-button] {
   text-decoration: none;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 960px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
+
+  .page {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-toolbar {
+    padding: 0 8px;
+  }
+
+  .app-title {
+    font-size: 1rem;
+  }
+
+  .page {
+    padding: 4px;
+    min-height: calc(100vh - 56px);
+  }
 }

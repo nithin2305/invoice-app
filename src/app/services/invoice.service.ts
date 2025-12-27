@@ -78,5 +78,29 @@ searchInvoices(invoiceNo?: string, lrNo?: string) {
   getInvoicePdfUrl(id: number) {
     return `/api/invoices/${id}/pdf`;
   }
+
+  getNextInvoiceNumber() {
+    return this.http.get(`${this.base}/invoices/next-number`, { responseType: 'text' });
+  }
+
+  updateInvoice(id: number, inv: Invoice): Observable<any> {
+    return this.http.put(`${this.base}/invoices/${id}`, inv);
+  }
+
+  getAllClients(): Observable<Client[]> {
+    return this.http.get<Client[]>(`${this.base}/clients`);
+  }
+
+  updateClient(id: number, client: Client): Observable<any> {
+    return this.http.put(`${this.base}/clients/${id}`, client);
+  }
+
+  getReportPdfUrl(startDate: string, endDate: string): string {
+    return `/api/reports/invoices/pdf?startDate=${startDate}&endDate=${endDate}`;
+  }
+
+  getReportExcelUrl(startDate: string, endDate: string): string {
+    return `/api/reports/invoices/excel?startDate=${startDate}&endDate=${endDate}`;
+  }
   
 }

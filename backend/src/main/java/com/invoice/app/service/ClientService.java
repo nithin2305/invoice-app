@@ -50,6 +50,21 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public ClientDTO updateClient(Long id, ClientDTO dto) {
+        Client existing = clientRepository.findById(id)
+                .orElseThrow(() -> new GlobalExceptionHandler.ResourceNotFoundException("Client not found: " + id));
+        
+        existing.setName(dto.getName());
+        existing.setAddress(dto.getAddress());
+        existing.setGstNumber(dto.getGstNumber());
+        existing.setPhone(dto.getPhone());
+        existing.setEmail(dto.getEmail());
+        
+        Client saved = clientRepository.save(existing);
+        return toDTO(saved);
+    }
+
     private ClientDTO toDTO(Client client) {
         return new ClientDTO(
                 client.getId(),
