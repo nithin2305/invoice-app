@@ -15,6 +15,9 @@ invoice-app/
 │       ├── entity/       # JPA entities
 │       ├── dto/          # Data transfer objects
 │       └── config/       # Configuration classes
+├── db/                   # Database scripts
+│   ├── mysql/            # MySQL initialization scripts
+│   └── h2/               # H2 initialization scripts
 ├── package.json          # Frontend dependencies
 └── backend/pom.xml       # Backend dependencies
 ```
@@ -55,14 +58,45 @@ The backend will start on `http://localhost:8080`.
 
 By default, the application uses H2 in-memory database. The H2 console is available at `http://localhost:8080/h2-console`.
 
-To use MySQL in production, update `backend/src/main/resources/application.properties`:
+#### Database Scripts
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/invoicedb
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
-```
+SQL scripts are available in the `db/` directory to manually create the database and tables:
+
+- **MySQL (Production)**: `db/mysql/init.sql`
+- **H2 (Development)**: `db/h2/init.sql`
+
+##### MySQL Setup
+
+1. Install MySQL Server and start it
+2. Run the initialization script:
+   ```bash
+   mysql -u root -p < db/mysql/init.sql
+   ```
+3. Update `backend/src/main/resources/application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/invoicedb
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+   ```
+
+##### H2 Setup (Development)
+
+For development, H2 tables are automatically created by JPA/Hibernate (`spring.jpa.hibernate.ddl-auto=update`). If you need to manually initialize the database, you can use the script at `db/h2/init.sql`.
+
+#### Database Schema
+
+The application has three main tables:
+
+| Table | Primary Key | Description |
+|-------|-------------|-------------|
+| `clients` | `id` (BIGINT, AUTO_INCREMENT) | Stores client/party information |
+| `invoices` | `id` (BIGINT, AUTO_INCREMENT) | Stores invoice header information |
+| `invoice_items` | `id` (BIGINT, AUTO_INCREMENT) | Stores invoice line items (LR details) |
+
+**Foreign Key Relationships:**
+- `invoices.party_id` → `clients.id` (ON DELETE SET NULL)
+- `invoice_items.invoice_id` → `invoices.id` (ON DELETE CASCADE)
 
 ### API Endpoints
 
