@@ -49,3 +49,6 @@ backend/*.log
 *.jar
 *.war
 *.ear
+
+# Sample/reference files
+*.pdf
