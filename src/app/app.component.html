@@ -1,48 +1,51 @@
 <mat-toolbar color="primary" class="app-toolbar">
-  <span class="app-title" routerLink="/">Invoice Desk</span>
+  <div class="brand" routerLink="/">
+    <span class="logo-icon">🚚</span>
+    <span class="app-title">Shriram Logistics</span>
+  </div>
   <span class="spacer"></span>
 
   <!-- Navigation for desktop -->
   <div class="desktop-nav">
     <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
-      <mat-icon>home</mat-icon> Home
+      <span class="nav-icon">🏠</span> Home
     </a>
     <a mat-button routerLink="/invoice/new" routerLinkActive="active-link">
-      <mat-icon>add_circle</mat-icon> New Invoice
+      <span class="nav-icon">➕</span> New Invoice
     </a>
     <a mat-button routerLink="/invoice/edit" routerLinkActive="active-link">
-      <mat-icon>edit</mat-icon> Modify
+      <span class="nav-icon">✏️</span> Modify
     </a>
     <a mat-button routerLink="/clients" routerLinkActive="active-link">
-      <mat-icon>people</mat-icon> Clients
+      <span class="nav-icon">👥</span> Clients
     </a>
     <a mat-button routerLink="/reports" routerLinkActive="active-link">
-      <mat-icon>assessment</mat-icon> Reports
+      <span class="nav-icon">📊</span> Reports
     </a>
   </div>
 
   <!-- Mobile menu icon -->
   <button mat-icon-button class="mobile-menu-icon" [matMenuTriggerFor]="menu" aria-label="menu">
-    <mat-icon>more_vert</mat-icon>
+    <span class="menu-icon">≡</span>
   </button>
 </mat-toolbar>
 
 <!-- Mobile menu -->
 <mat-menu #menu="matMenu">
   <a mat-menu-item routerLink="/">
-    <mat-icon>home</mat-icon> Home
+    <span class="nav-icon">🏠</span> Home
   </a>
   <a mat-menu-item routerLink="/invoice/new">
-    <mat-icon>add_circle</mat-icon> New Invoice
+    <span class="nav-icon">➕</span> New Invoice
   </a>
   <a mat-menu-item routerLink="/invoice/edit">
-    <mat-icon>edit</mat-icon> Modify Invoice
+    <span class="nav-icon">✏️</span> Modify Invoice
   </a>
   <a mat-menu-item routerLink="/clients">
-    <mat-icon>people</mat-icon> Clients
+    <span class="nav-icon">👥</span> Clients
   </a>
   <a mat-menu-item routerLink="/reports">
-    <mat-icon>assessment</mat-icon> Reports
+    <span class="nav-icon">📊</span> Reports
   </a>
 </mat-menu>
 

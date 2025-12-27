@@ -10,6 +10,12 @@
   padding: 40px 20px;
 }
 
+.company-logo {
+  font-size: 80px;
+  display: block;
+  margin-bottom: 15px;
+}
+
 .hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
@@ -49,9 +55,6 @@
 
 .action-icon {
   font-size: 64px;
-  width: 64px;
-  height: 64px;
-  color: #1976d2;
   margin-bottom: 15px;
 }
 
@@ -69,6 +72,10 @@
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+  .company-logo {
+    font-size: 60px;
+  }
+
   .hero-section h1 {
     font-size: 1.8rem;
   }
@@ -88,8 +95,6 @@
 
   .action-icon {
     font-size: 48px;
-    width: 48px;
-    height: 48px;
   }
 
   .action-card h2 {
@@ -107,6 +112,10 @@
 }
 
 @media (max-width: 480px) {
+  .company-logo {
+    font-size: 50px;
+  }
+
   .hero-section h1 {
     font-size: 1.5rem;
   }
@@ -117,8 +126,6 @@
 
   .action-icon {
     font-size: 40px;
-    width: 40px;
-    height: 40px;
   }
 
   .action-card h2 {

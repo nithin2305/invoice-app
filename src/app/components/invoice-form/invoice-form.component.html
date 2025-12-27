@@ -13,7 +13,7 @@
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="searchInvoiceForEdit()" 
                 [disabled]="searchingInvoice">
-          <mat-icon>search</mat-icon> {{ searchingInvoice ? 'Searching...' : 'Load Invoice' }}
+          🔍 {{ searchingInvoice ? 'Searching...' : 'Load Invoice' }}
         </button>
       </div>
 
@@ -26,7 +26,7 @@
           <input matInput [(ngModel)]="invoice.invoiceNo" name="invoiceNo" />
         </mat-form-field>
   
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="flex">
           <mat-label>Invoice Date</mat-label>
           <input matInput type="date" [(ngModel)]="invoice.invoiceDate" name="invoiceDate" />
         </mat-form-field>
@@ -59,7 +59,7 @@
         </mat-form-field>
   
         <button mat-stroked-button color="primary" (click)="createClientFromInput()">
-          <mat-icon>person_add</mat-icon> Create Client
+          👤 Create Client
         </button>
       </div>
   
@@ -74,17 +74,17 @@
               <input matInput [(ngModel)]="it.lrNo" [name]="'lrNo' + i" />
             </mat-form-field>
   
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="small">
               <mat-label>LR Date</mat-label>
               <input matInput type="date" [(ngModel)]="it.lrDate" [name]="'lrDate' + i" />
             </mat-form-field>
   
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="small">
               <mat-label>From</mat-label>
               <input matInput [(ngModel)]="it.fromLocation" [name]="'from' + i" />
             </mat-form-field>
   
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="small">
               <mat-label>To</mat-label>
               <input matInput [(ngModel)]="it.toLocation" [name]="'to' + i" />
             </mat-form-field>
@@ -123,14 +123,14 @@
               </mat-form-field>
   
               <button mat-icon-button color="warn" (click)="removeItem(i)" aria-label="Remove item">
-                <mat-icon>delete</mat-icon>
+                🗑️
               </button>
             </div>
           </div>
         </div>
   
         <div class="add-row">
-          <button mat-stroked-button color="primary" (click)="addItem()"><mat-icon>add</mat-icon> Add LR</button>
+          <button mat-stroked-button color="primary" (click)="addItem()">➕ Add LR</button>
         </div>
       </div>
   
@@ -162,10 +162,10 @@
   
       <div class="actions">
         <button mat-flat-button color="primary" (click)="save()" [disabled]="saving">
-          <mat-icon>save</mat-icon> {{ saving ? 'Saving...' : (editInvoiceId ? 'Update Invoice' : 'Save Invoice') }}
+          💾 {{ saving ? 'Saving...' : (editInvoiceId ? 'Update Invoice' : 'Save Invoice') }}
         </button>
         <button mat-stroked-button (click)="resetForm()" *ngIf="editInvoiceId">
-          <mat-icon>cancel</mat-icon> Cancel
+          ❌ Cancel
         </button>
       </div>
       
