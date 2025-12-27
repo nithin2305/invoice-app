@@ -51,4 +51,5 @@ backend/*.log
 *.ear
 
 # Sample/reference files
-*.pdf
+# Sample/reference PDFs (exclude from repo)
+2902.pdf
