@@ -58,7 +58,8 @@ public class PdfGenerationService {
     
     private void generateInvoicePage(Document document, Invoice invoice, String copyType) throws DocumentException {
         // Fonts - increased sizes to use more of the A4 sheet
-        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, java.awt.Color.BLUE);
+        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, java.awt.Color.BLUE);
+        Font companyAddrFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
         Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 11);
         Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
@@ -70,22 +71,25 @@ public class PdfGenerationService {
         copyHeader.setAlignment(Element.ALIGN_RIGHT);
         document.add(copyHeader);
         
-        // Company Header - centered
+        // Company Header - centered with 1.5 line gaps
         Paragraph companyName = new Paragraph(COMPANY_NAME, companyFont);
         companyName.setAlignment(Element.ALIGN_CENTER);
+        companyName.setSpacingAfter(8);
         document.add(companyName);
         
-        Paragraph companyAddr = new Paragraph(COMPANY_ADDRESS, smallFont);
+        Paragraph companyAddr = new Paragraph(COMPANY_ADDRESS, companyAddrFont);
         companyAddr.setAlignment(Element.ALIGN_CENTER);
+        companyAddr.setSpacingAfter(6);
         document.add(companyAddr);
         
         Paragraph contactInfo = new Paragraph(COMPANY_CONTACT + "     " + COMPANY_EMAIL, smallFont);
         contactInfo.setAlignment(Element.ALIGN_CENTER);
+        contactInfo.setSpacingAfter(6);
         document.add(contactInfo);
         
         Paragraph gstInfo = new Paragraph(COMPANY_STATE + "  " + COMPANY_GSTIN + "  " + COMPANY_PAN, smallFont);
         gstInfo.setAlignment(Element.ALIGN_CENTER);
-        gstInfo.setSpacingAfter(8);
+        gstInfo.setSpacingAfter(12);
         document.add(gstInfo);
         
         // INVOICE Title - centered with box
@@ -184,7 +188,7 @@ public class PdfGenerationService {
                 }
                 
                 PdfPCell transChargesCell = new PdfPCell(new Phrase(transLine.toString(), normalFont));
-                transChargesCell.setBorder(Rectangle.NO_BORDER);
+                transChargesCell.setBorder(Rectangle.BOTTOM);
                 transChargesCell.setPadding(4);
                 leftContent.addCell(transChargesCell);
                 
