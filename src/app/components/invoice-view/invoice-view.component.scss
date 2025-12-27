@@ -1,0 +1,50 @@
+.view-card {
+  max-width: 1100px;
+  margin: 18px auto;
+  padding: 12px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+}
+
+.li-left {
+  flex: 1;
+}
+
+.li-right {
+  display: flex;
+  gap: 8px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.sub {
+  color: #666;
+  font-size: 13px;
+}
+
+.detail {
+  margin-top: 24px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.summary {
+  font-weight: 600;
+  font-size: 16px;
+}

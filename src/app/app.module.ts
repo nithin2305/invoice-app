@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -35,10 +36,11 @@ const routes: Routes = [
     InvoiceFormComponent,
     InvoiceListComponent,
     InvoiceViewComponent,
+    InvoicePdfComponent,
     SafeUrlPipe
   ],
   imports: [
-    
+    CommonModule,
     BrowserModule,
         FormsModule ,
         HttpClientModule,
