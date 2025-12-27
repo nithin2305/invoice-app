@@ -286,9 +286,16 @@ public class PdfGenerationService {
         bottomTable.setSpacingBefore(8);
         bottomTable.setWidths(new float[]{50f, 50f});
         
-        // Bank Details (left) - using nested table for better alignment
+        // Bank Details (left) - with GST note above bank details
         PdfPTable bankContent = new PdfPTable(1);
         bankContent.setWidthPercentage(100);
+        
+        // GST Note section (at top of left column, above bank details)
+        PdfPCell gstConsignorCell = new PdfPCell(new Phrase("GST TO BE PAID BY CONSIGNOR/\nCONSIGNEE/GTA/OTHERS", normalFont));
+        gstConsignorCell.setBorder(Rectangle.BOTTOM);
+        gstConsignorCell.setPadding(5);
+        gstConsignorCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        bankContent.addCell(gstConsignorCell);
         
         // Bank title - centered
         PdfPCell bankTitleCell = new PdfPCell(new Phrase("Company Bank Details", headerFont));
@@ -317,32 +324,16 @@ public class PdfGenerationService {
         bankCell.setPadding(5);
         bottomTable.addCell(bankCell);
         
-        // Signature (right) - with GST note at top, separated from signature
-        PdfPTable rightContent = new PdfPTable(1);
-        rightContent.setWidthPercentage(100);
-        
-        // GST Note section (top of right column)
-        PdfPCell gstConsignorCell = new PdfPCell(new Phrase("GST TO BE PAID BY CONSIGNOR/\nCONSIGNEE/GTA/OTHERS", normalFont));
-        gstConsignorCell.setBorder(Rectangle.BOTTOM);
-        gstConsignorCell.setPadding(5);
-        gstConsignorCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        rightContent.addCell(gstConsignorCell);
-        
-        // Signature section (bottom of right column)
+        // Signature (right) - only signature section, no GST note
         StringBuilder signInfo = new StringBuilder();
-        signInfo.append("         FOR ").append(COMPANY_NAME).append("\n\n\n\n");
+        signInfo.append("         FOR ").append(COMPANY_NAME).append("\n\n\n\n\n");
         signInfo.append("    Authorised signature");
         
         PdfPCell signCell = new PdfPCell(new Phrase(signInfo.toString(), normalFont));
-        signCell.setBorder(Rectangle.NO_BORDER);
+        signCell.setBorder(Rectangle.BOX);
         signCell.setPadding(5);
         signCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        rightContent.addCell(signCell);
-        
-        PdfPCell rightCell = new PdfPCell(rightContent);
-        rightCell.setBorder(Rectangle.BOX);
-        rightCell.setPadding(0);
-        bottomTable.addCell(rightCell);
+        bottomTable.addCell(signCell);
         
         document.add(bottomTable);
         
