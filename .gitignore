@@ -40,3 +40,12 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Backend (Spring Boot / Maven)
+backend/target/
+backend/data/
+backend/*.log
+*.class
+*.jar
+*.war
+*.ear
