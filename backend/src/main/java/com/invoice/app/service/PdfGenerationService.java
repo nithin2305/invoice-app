@@ -286,15 +286,33 @@ public class PdfGenerationService {
         bottomTable.setSpacingBefore(8);
         bottomTable.setWidths(new float[]{50f, 50f});
         
-        // Bank Details (left) - only bank info, GST note moved to signature section
-        StringBuilder bankInfo = new StringBuilder();
-        bankInfo.append("     Company Bank Details\n\n");
-        bankInfo.append("Bank Name :   ").append(BANK_NAME).append("\n");
-        bankInfo.append("A/C. No :   ").append(BANK_ACCOUNT).append("\n");
-        bankInfo.append("Branch :   ").append(BANK_BRANCH).append("\n");
-        bankInfo.append("IFSC Code :   ").append(BANK_IFSC);
+        // Bank Details (left) - using nested table for better alignment
+        PdfPTable bankContent = new PdfPTable(1);
+        bankContent.setWidthPercentage(100);
         
-        PdfPCell bankCell = new PdfPCell(new Phrase(bankInfo.toString(), smallFont));
+        // Bank title - centered
+        PdfPCell bankTitleCell = new PdfPCell(new Phrase("Company Bank Details", headerFont));
+        bankTitleCell.setBorder(Rectangle.NO_BORDER);
+        bankTitleCell.setPadding(3);
+        bankTitleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        bankContent.addCell(bankTitleCell);
+        
+        // Bank details table - left aligned with consistent formatting
+        PdfPTable bankDetailsTable = new PdfPTable(2);
+        bankDetailsTable.setWidthPercentage(100);
+        bankDetailsTable.setWidths(new float[]{35f, 65f});
+        
+        addBankDetailRow(bankDetailsTable, "Bank Name", BANK_NAME, smallFont);
+        addBankDetailRow(bankDetailsTable, "A/C. No", BANK_ACCOUNT, smallFont);
+        addBankDetailRow(bankDetailsTable, "Branch", BANK_BRANCH, smallFont);
+        addBankDetailRow(bankDetailsTable, "IFSC Code", BANK_IFSC, smallFont);
+        
+        PdfPCell bankDetailsCell = new PdfPCell(bankDetailsTable);
+        bankDetailsCell.setBorder(Rectangle.NO_BORDER);
+        bankDetailsCell.setPadding(2);
+        bankContent.addCell(bankDetailsCell);
+        
+        PdfPCell bankCell = new PdfPCell(bankContent);
         bankCell.setBorder(Rectangle.BOX);
         bankCell.setPadding(5);
         bottomTable.addCell(bankCell);
@@ -428,6 +446,20 @@ public class PdfGenerationService {
         cell.setPadding(4);
         cell.setHorizontalAlignment(alignment);
         table.addCell(cell);
+    }
+
+    private void addBankDetailRow(PdfPTable table, String label, String value, Font font) {
+        PdfPCell labelCell = new PdfPCell(new Phrase(label + " :", font));
+        labelCell.setBorder(Rectangle.NO_BORDER);
+        labelCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        labelCell.setPadding(2);
+        table.addCell(labelCell);
+
+        PdfPCell valueCell = new PdfPCell(new Phrase(value, font));
+        valueCell.setBorder(Rectangle.NO_BORDER);
+        valueCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        valueCell.setPadding(2);
+        table.addCell(valueCell);
     }
 
     private void addSummaryRow(PdfPTable table, String label, String value, Font font) {
