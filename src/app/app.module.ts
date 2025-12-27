@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
 import { InvoiceViewComponent } from './components/invoice-view/invoice-view.component';
 import { InvoicePdfComponent } from './components/invoice-pdf/invoice-pdf.component';
+import { InvoicePrintComponent } from './components/invoice-print/invoice-print.component';
 import { HomeComponent } from './components/home/home.component';
 import { ClientManagementComponent } from './components/client-management/client-management.component';
 import { ReportsComponent } from './components/reports/reports.component';
@@ -34,10 +35,12 @@ const routes: Routes = [
   { path: '', component: HomeComponent }, // Home page as default
   { path: 'invoice/new', component: InvoiceFormComponent }, // Create new invoice
   { path: 'invoice/edit', component: InvoiceFormComponent }, // Edit invoice
+  { path: 'invoice/print-demo', component: InvoicePrintComponent }, // Demo print preview
   { path: 'clients', component: ClientManagementComponent }, // Client management
   { path: 'reports', component: ReportsComponent }, // Reports
   { path: 'invoices', component: InvoiceViewComponent },     // list/search page
   { path: 'invoice/:id/pdf', component: InvoicePdfComponent }, // PDF viewer route
+  { path: 'invoice/:id/print', component: InvoicePrintComponent }, // Print preview route
   { path: '**', redirectTo: '' } // fallback
 ];
 @NgModule({
@@ -47,6 +50,7 @@ const routes: Routes = [
     InvoiceListComponent,
     InvoiceViewComponent,
     InvoicePdfComponent,
+    InvoicePrintComponent,
     HomeComponent,
     ClientManagementComponent,
     ReportsComponent,

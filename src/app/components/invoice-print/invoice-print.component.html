@@ -1,0 +1,129 @@
+<div class="invoice-print-container" *ngIf="invoice">
+  <!-- Print Controls (hidden in print) -->
+  <div class="print-controls no-print">
+    <button mat-raised-button color="primary" (click)="print()">🖨️ Print</button>
+    <button mat-stroked-button (click)="toggleCopyType()">
+      Switch to {{ copyType === 'DUPLICATE' ? 'ORIGINAL' : 'DUPLICATE' }} COPY
+    </button>
+  </div>
+
+  <!-- Invoice Page -->
+  <div class="invoice-page">
+    <!-- Copy Type Header -->
+    <div class="copy-type">{{ copyType }} COPY</div>
+
+    <!-- Company Header -->
+    <div class="company-header">
+      <div class="company-name">{{ companyName }}</div>
+      <div class="company-address">{{ companyAddress }}</div>
+      <div class="company-contact">{{ companyContact }}     {{ companyEmail }}</div>
+      <div class="company-gst">{{ companyState }}  {{ companyGstin }}  {{ companyPan }}</div>
+    </div>
+
+    <!-- INVOICE Title -->
+    <div class="invoice-title-box">
+      <span>INVOICE</span>
+    </div>
+
+    <!-- Main Content: Party + Invoice Details -->
+    <div class="main-section">
+      <div class="party-details">
+        <div class="party-name">M/S {{ invoice.partyName }}</div>
+        <div class="party-address">{{ invoice.partyAddress }}</div>
+        <div class="party-gst" *ngIf="invoice.partyGst">GSTIN: {{ invoice.partyGst }}</div>
+      </div>
+      <div class="invoice-details">
+        <div>INVOICE  NO : {{ invoice.invoiceNo }}</div>
+        <div>DATE : {{ formatDate(invoice.invoiceDate) }}</div>
+      </div>
+    </div>
+
+    <!-- Description Header -->
+    <table class="content-table">
+      <thead>
+        <tr>
+          <th class="desc-header">DESCRIPTION OF GOODS/SERVICES</th>
+          <th class="amount-header">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoice.items; let i = index">
+          <td class="item-cell">
+            <div class="item-number">{{ i + 1 }} Transportation Charges</div>
+            <table class="lr-table">
+              <thead>
+                <tr>
+                  <th>L.R. No</th>
+                  <th>Date</th>
+                  <th>FROM</th>
+                  <th>To</th>
+                  <th>Description of Goods</th>
+                  <th>Pkgs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ item.lrNo }}</td>
+                  <td>{{ formatDate(item.lrDate) }}</td>
+                  <td>{{ item.fromLocation }}</td>
+                  <td>{{ item.toLocation }}</td>
+                  <td>{{ item.goodsDescription }}</td>
+                  <td>{{ item.packageType || 'AS PER INVOICE' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="vehicle-type" *ngIf="item.vehicleType">VehicleType:{{ item.vehicleType }}</div>
+          </td>
+          <td class="amount-cell">{{ formatAmount(item.amount) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- GST Note -->
+    <div class="gst-note">GST TO BE PAID BY THE SERVICE RECEIPIENT</div>
+
+    <!-- Total -->
+    <div class="total-row">
+      <span class="total-label">TOTAL</span>
+      <span class="total-amount">{{ formatAmount(invoice.totalAmount || getItemsTotal()) }}</span>
+    </div>
+
+    <!-- Amount in Words -->
+    <div class="amount-words">
+      <strong>Amount Chargeable in Words :</strong><br>
+      {{ invoice.amountInWords || '' }}
+    </div>
+
+    <!-- Bottom Section: Bank Details + Signature -->
+    <div class="bottom-section">
+      <div class="bank-details">
+        <div class="bank-title">Company Bank Details</div>
+        <div class="gst-note-small">GST TO BE PAID BY CONSIGNOR/<br>CONSIGNEE/GTA/OTHERS</div>
+        <div class="bank-info">
+          <div>Bank Name :   {{ bankName }}</div>
+          <div>A/C. No :   {{ bankAccount }}</div>
+          <div>Branch :   {{ bankBranch }}</div>
+          <div>IFSC Code :   {{ bankIfsc }}</div>
+        </div>
+      </div>
+      <div class="signature-section">
+        <div class="for-company">FOR {{ companyName }}</div>
+        <div class="signature-space"></div>
+        <div class="auth-sign">Authorised signature</div>
+      </div>
+    </div>
+
+    <!-- Declaration -->
+    <div class="declaration">
+      <strong>Declaration</strong><br>
+      The goods were dispatched as per above details.<br>
+      Kindly payment & oblige.
+    </div>
+
+    <!-- Jurisdiction -->
+    <div class="jurisdiction">E. & O.E SUBJECT TO CHENNAI JURISDICTION</div>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">Loading invoice...</div>
+<div *ngIf="!loading && !invoice" class="no-data">No invoice data available</div>
