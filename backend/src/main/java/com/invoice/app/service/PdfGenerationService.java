@@ -104,28 +104,28 @@ public class PdfGenerationService {
         mainTable.setWidths(new float[]{65f, 35f});
         mainTable.setSpacingBefore(5);
         
-        // Party Details Cell (left) - with border
+        // Party Details Cell (left) - with border and line gaps for spacious look
         StringBuilder partyInfo = new StringBuilder();
-        partyInfo.append("M/S ").append(nullSafe(invoice.getPartyName())).append("\n");
-        partyInfo.append(nullSafe(invoice.getPartyAddress())).append("\n");
+        partyInfo.append("M/S ").append(nullSafe(invoice.getPartyName())).append("\n\n");
+        partyInfo.append(nullSafe(invoice.getPartyAddress())).append("\n\n");
         if (invoice.getPartyGst() != null && !invoice.getPartyGst().isEmpty()) {
             partyInfo.append("GSTIN: ").append(invoice.getPartyGst());
         }
         
         PdfPCell partyCell = new PdfPCell(new Phrase(partyInfo.toString(), normalFont));
         partyCell.setBorder(Rectangle.BOX);
-        partyCell.setPadding(5);
+        partyCell.setPadding(8);
         mainTable.addCell(partyCell);
         
-        // Invoice Details Cell (right) - with border
+        // Invoice Details Cell (right) - with border and line gaps for spacious look
         StringBuilder invoiceDetails = new StringBuilder();
-        invoiceDetails.append("INVOICE  NO : ").append(nullSafe(invoice.getInvoiceNo())).append("\n");
+        invoiceDetails.append("INVOICE  NO : ").append(nullSafe(invoice.getInvoiceNo())).append("\n\n");
         String dateStr = invoice.getInvoiceDate() != null ? invoice.getInvoiceDate().format(DATE_FORMAT) : "";
         invoiceDetails.append("DATE : ").append(dateStr);
         
         PdfPCell invoiceCell = new PdfPCell(new Phrase(invoiceDetails.toString(), normalFont));
         invoiceCell.setBorder(Rectangle.BOX);
-        invoiceCell.setPadding(5);
+        invoiceCell.setPadding(8);
         mainTable.addCell(invoiceCell);
         
         document.add(mainTable);
@@ -134,19 +134,19 @@ public class PdfGenerationService {
         PdfPTable contentTable = new PdfPTable(2);
         contentTable.setWidthPercentage(100);
         contentTable.setWidths(new float[]{85f, 15f});
-        contentTable.setSpacingBefore(3);
+        contentTable.setSpacingBefore(8);
         
         // Left side: "DESCRIPTION OF GOODS/SERVICES" header
         PdfPCell descHeaderCell = new PdfPCell(new Phrase("DESCRIPTION OF GOODS/SERVICES", headerFont));
         descHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        descHeaderCell.setPadding(3);
+        descHeaderCell.setPadding(6);
         descHeaderCell.setBorder(Rectangle.BOX);
         contentTable.addCell(descHeaderCell);
         
         // Right side: "Amount" header
         PdfPCell amountHeaderCell = new PdfPCell(new Phrase("Amount", headerFont));
         amountHeaderCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        amountHeaderCell.setPadding(3);
+        amountHeaderCell.setPadding(6);
         amountHeaderCell.setBorder(Rectangle.BOX);
         contentTable.addCell(amountHeaderCell);
         
@@ -167,10 +167,25 @@ public class PdfGenerationService {
                 PdfPTable leftContent = new PdfPTable(1);
                 leftContent.setWidthPercentage(100);
                 
-                // Row 1: Serial number and "Transportation Charges"
-                PdfPCell transChargesCell = new PdfPCell(new Phrase(sno + " Transportation Charges", normalFont));
+                // Row 1: Serial number, "Transportation Charges", Vehicle Number and Vehicle Type
+                String vehicleNo = nullSafe(item.getVehicleNumber());
+                String vehicleType = nullSafe(item.getVehicleType());
+                StringBuilder transLine = new StringBuilder();
+                transLine.append(sno).append(" Transportation Charges");
+                if (!vehicleNo.isEmpty() || !vehicleType.isEmpty()) {
+                    transLine.append("     ");
+                    if (!vehicleNo.isEmpty()) {
+                        transLine.append("Vehicle No: ").append(vehicleNo);
+                    }
+                    if (!vehicleType.isEmpty()) {
+                        if (!vehicleNo.isEmpty()) transLine.append("  |  ");
+                        transLine.append("Vehicle Type: ").append(vehicleType);
+                    }
+                }
+                
+                PdfPCell transChargesCell = new PdfPCell(new Phrase(transLine.toString(), normalFont));
                 transChargesCell.setBorder(Rectangle.NO_BORDER);
-                transChargesCell.setPadding(2);
+                transChargesCell.setPadding(4);
                 leftContent.addCell(transChargesCell);
                 
                 // Row 2: LR details table
@@ -203,22 +218,12 @@ public class PdfGenerationService {
                 
                 PdfPCell lrTableCell = new PdfPCell(lrTable);
                 lrTableCell.setBorder(Rectangle.NO_BORDER);
-                lrTableCell.setPadding(2);
+                lrTableCell.setPadding(4);
                 leftContent.addCell(lrTableCell);
-                
-                // Vehicle Type row
-                String vehicleType = nullSafe(item.getVehicleType());
-                if (!vehicleType.isEmpty()) {
-                    PdfPCell vehicleCell = new PdfPCell(new Phrase("VehicleType:" + vehicleType, tinyFont));
-                    vehicleCell.setBorder(Rectangle.NO_BORDER);
-                    vehicleCell.setPadding(2);
-                    vehicleCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                    leftContent.addCell(vehicleCell);
-                }
                 
                 PdfPCell leftCell = new PdfPCell(leftContent);
                 leftCell.setBorder(Rectangle.BOX);
-                leftCell.setPadding(3);
+                leftCell.setPadding(5);
                 itemTable.addCell(leftCell);
                 
                 // Right cell - Amount
@@ -227,7 +232,7 @@ public class PdfGenerationService {
                 PdfPCell amtCell = new PdfPCell(new Phrase(formatAmountNoDecimals(amt), normalFont));
                 amtCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 amtCell.setVerticalAlignment(Element.ALIGN_TOP);
-                amtCell.setPadding(5);
+                amtCell.setPadding(8);
                 amtCell.setBorder(Rectangle.BOX);
                 itemTable.addCell(amtCell);
                 
