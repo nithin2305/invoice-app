@@ -1,0 +1,300 @@
+.invoice-print-container {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.print-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.invoice-page {
+  background: white;
+  padding: 15mm;
+  border: 1px solid #ccc;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* Copy Type */
+.copy-type {
+  text-align: right;
+  color: red;
+  font-weight: bold;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+/* Company Header */
+.company-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.company-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0000cc;
+  margin-bottom: 2px;
+}
+
+.company-address {
+  font-size: 9px;
+  margin-bottom: 2px;
+}
+
+.company-contact {
+  font-size: 8px;
+  margin-bottom: 2px;
+}
+
+.company-gst {
+  font-size: 8px;
+}
+
+/* Invoice Title */
+.invoice-title-box {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.invoice-title-box span {
+  border: 1px solid #000;
+  padding: 3px 20px;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+/* Main Section */
+.main-section {
+  display: flex;
+  border: 1px solid #000;
+  margin-bottom: 5px;
+}
+
+.party-details {
+  flex: 2;
+  padding: 8px;
+  border-right: 1px solid #000;
+}
+
+.party-name {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.party-address {
+  white-space: pre-line;
+  margin-bottom: 3px;
+}
+
+.party-gst {
+  font-size: 9px;
+}
+
+.invoice-details {
+  flex: 1;
+  padding: 8px;
+  font-size: 9px;
+}
+
+/* Content Table */
+.content-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 5px;
+}
+
+.content-table th,
+.content-table td {
+  border: 1px solid #000;
+  padding: 5px;
+}
+
+.desc-header {
+  text-align: center;
+  font-weight: bold;
+  width: 85%;
+  background: #f0f0f0;
+}
+
+.amount-header {
+  text-align: center;
+  font-weight: bold;
+  width: 15%;
+  background: #f0f0f0;
+}
+
+.item-cell {
+  padding: 8px;
+  vertical-align: top;
+}
+
+.item-number {
+  margin-bottom: 5px;
+}
+
+.lr-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 5px 0;
+  font-size: 8px;
+}
+
+.lr-table th,
+.lr-table td {
+  border: 1px solid #999;
+  padding: 3px;
+  text-align: center;
+}
+
+.lr-table th {
+  background: #f5f5f5;
+  font-weight: normal;
+}
+
+.vehicle-type {
+  text-align: right;
+  font-size: 8px;
+  margin-top: 5px;
+}
+
+.amount-cell {
+  text-align: right;
+  vertical-align: top;
+  font-weight: bold;
+}
+
+/* GST Note */
+.gst-note {
+  text-align: center;
+  border: 1px solid #000;
+  border-top: none;
+  padding: 5px;
+  font-size: 9px;
+}
+
+/* Total Row */
+.total-row {
+  display: flex;
+  border: 1px solid #000;
+  border-top: none;
+}
+
+.total-label {
+  flex: 85%;
+  text-align: right;
+  padding: 5px 10px;
+  font-weight: bold;
+  border-right: 1px solid #000;
+}
+
+.total-amount {
+  flex: 15%;
+  text-align: right;
+  padding: 5px;
+  font-weight: bold;
+}
+
+/* Amount in Words */
+.amount-words {
+  margin: 10px 0;
+  font-size: 9px;
+}
+
+/* Bottom Section */
+.bottom-section {
+  display: flex;
+  border: 1px solid #000;
+  margin: 10px 0;
+}
+
+.bank-details {
+  flex: 1;
+  padding: 8px;
+  border-right: 1px solid #000;
+  font-size: 8px;
+}
+
+.bank-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.gst-note-small {
+  margin-bottom: 10px;
+  font-size: 8px;
+}
+
+.bank-info {
+  font-size: 8px;
+}
+
+.signature-section {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+}
+
+.for-company {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.signature-space {
+  height: 40px;
+}
+
+.auth-sign {
+  font-size: 9px;
+}
+
+/* Declaration */
+.declaration {
+  font-size: 8px;
+  margin: 10px 0;
+}
+
+/* Jurisdiction */
+.jurisdiction {
+  text-align: center;
+  font-size: 8px;
+  margin-top: 10px;
+}
+
+/* Loading/Error States */
+.loading,
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .invoice-print-container {
+    padding: 0;
+    max-width: none;
+  }
+
+  .invoice-page {
+    border: none;
+    padding: 10mm;
+    page-break-after: always;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

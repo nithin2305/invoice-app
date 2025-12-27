@@ -37,9 +37,10 @@
   border-left: 4px solid #1976d2;
 }
 
-.report-info mat-icon {
+.report-info .info-icon {
   color: #1976d2;
   flex-shrink: 0;
+  font-size: 20px;
 }
 
 .report-info p {

@@ -4,7 +4,7 @@
       <div class="title-row">
         <h1>Client Management</h1>
         <button mat-raised-button color="primary" (click)="startNewClient()">
-          <mat-icon>add</mat-icon> Add New Client
+          ➕ Add New Client
         </button>
       </div>
     </mat-card-title>
@@ -43,10 +43,10 @@
 
       <div class="form-actions">
         <button mat-raised-button color="primary" (click)="saveClient()">
-          <mat-icon>save</mat-icon> Save
+          💾 Save
         </button>
         <button mat-stroked-button (click)="cancelEdit()">
-          <mat-icon>cancel</mat-icon> Cancel
+          ❌ Cancel
         </button>
       </div>
     </mat-card-content>
@@ -75,7 +75,7 @@
           </div>
           <div class="client-actions">
             <button mat-icon-button color="primary" (click)="editClient(client)" matTooltip="Edit">
-              <mat-icon>edit</mat-icon>
+              ✏️
             </button>
           </div>
         </div>

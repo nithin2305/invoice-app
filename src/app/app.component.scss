@@ -14,10 +14,29 @@
   z-index: 1000;
 }
 
-.app-title {
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.app-title {
   font-size: 1.2rem;
   font-weight: 500;
+}
+
+.nav-icon {
+  font-size: 16px;
+  margin-right: 4px;
+}
+
+.menu-icon {
+  font-size: 20px;
 }
 
 .desktop-nav {

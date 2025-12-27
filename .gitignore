@@ -49,3 +49,7 @@ backend/*.log
 *.jar
 *.war
 *.ear
+
+# Sample/reference files
+# Sample/reference PDFs (exclude from repo)
+2902.pdf

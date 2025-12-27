@@ -1,13 +1,14 @@
 <div class="home-container">
   <div class="hero-section">
-    <h1>Invoice Management System</h1>
-    <p class="subtitle">Manage your transport invoices, clients, and reports efficiently</p>
+    <span class="company-logo">🚚</span>
+    <h1>Shriram Logistics</h1>
+    <p class="subtitle">Invoice Management System</p>
   </div>
 
   <div class="action-cards">
     <mat-card class="action-card" (click)="navigateTo('/invoice/new')">
       <mat-card-content>
-        <mat-icon class="action-icon">add_circle</mat-icon>
+        <span class="action-icon">➕</span>
         <h2>Create Invoice</h2>
         <p>Create a new transport invoice</p>
       </mat-card-content>
@@ -15,7 +16,7 @@
 
     <mat-card class="action-card" (click)="navigateTo('/invoice/edit')">
       <mat-card-content>
-        <mat-icon class="action-icon">edit</mat-icon>
+        <span class="action-icon">✏️</span>
         <h2>Modify Invoice</h2>
         <p>Edit an existing invoice</p>
       </mat-card-content>
@@ -23,7 +24,7 @@
 
     <mat-card class="action-card" (click)="navigateTo('/clients')">
       <mat-card-content>
-        <mat-icon class="action-icon">people</mat-icon>
+        <span class="action-icon">👥</span>
         <h2>Manage Clients</h2>
         <p>Add or modify client details</p>
       </mat-card-content>
@@ -31,7 +32,7 @@
 
     <mat-card class="action-card" (click)="navigateTo('/reports')">
       <mat-card-content>
-        <mat-icon class="action-icon">assessment</mat-icon>
+        <span class="action-icon">📊</span>
         <h2>Reports</h2>
         <p>Generate PDF or Excel reports</p>
       </mat-card-content>
