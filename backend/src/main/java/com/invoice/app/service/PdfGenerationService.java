@@ -57,13 +57,13 @@ public class PdfGenerationService {
     }
     
     private void generateInvoicePage(Document document, Invoice invoice, String copyType) throws DocumentException {
-        // Fonts matching the original PDF
-        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, java.awt.Color.BLUE);
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9);
-        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 8);
-        Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 7);
-        Font tinyFont = FontFactory.getFont(FontFactory.HELVETICA, 6);
-        Font copyTypeFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, java.awt.Color.RED);
+        // Fonts - increased sizes to use more of the A4 sheet
+        Font companyFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, java.awt.Color.BLUE);
+        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
+        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 11);
+        Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+        Font tinyFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+        Font copyTypeFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11, java.awt.Color.RED);
         
         // Copy Type Header (top right)
         Paragraph copyHeader = new Paragraph(copyType, copyTypeFont);
@@ -286,11 +286,9 @@ public class PdfGenerationService {
         bottomTable.setSpacingBefore(8);
         bottomTable.setWidths(new float[]{50f, 50f});
         
-        // Bank Details (left)
+        // Bank Details (left) - only bank info, GST note moved to signature section
         StringBuilder bankInfo = new StringBuilder();
-        bankInfo.append("     Company Bank Details\n");
-        bankInfo.append("GST TO BE PAID BY CONSIGNOR/\n");
-        bankInfo.append("CONSIGNEE/GTA/OTHERS\n\n");
+        bankInfo.append("     Company Bank Details\n\n");
         bankInfo.append("Bank Name :   ").append(BANK_NAME).append("\n");
         bankInfo.append("A/C. No :   ").append(BANK_ACCOUNT).append("\n");
         bankInfo.append("Branch :   ").append(BANK_BRANCH).append("\n");
@@ -301,16 +299,32 @@ public class PdfGenerationService {
         bankCell.setPadding(5);
         bottomTable.addCell(bankCell);
         
-        // Signature (right)
+        // Signature (right) - with GST note at top, separated from signature
+        PdfPTable rightContent = new PdfPTable(1);
+        rightContent.setWidthPercentage(100);
+        
+        // GST Note section (top of right column)
+        PdfPCell gstConsignorCell = new PdfPCell(new Phrase("GST TO BE PAID BY CONSIGNOR/\nCONSIGNEE/GTA/OTHERS", normalFont));
+        gstConsignorCell.setBorder(Rectangle.BOTTOM);
+        gstConsignorCell.setPadding(5);
+        gstConsignorCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        rightContent.addCell(gstConsignorCell);
+        
+        // Signature section (bottom of right column)
         StringBuilder signInfo = new StringBuilder();
         signInfo.append("         FOR ").append(COMPANY_NAME).append("\n\n\n\n");
         signInfo.append("    Authorised signature");
         
         PdfPCell signCell = new PdfPCell(new Phrase(signInfo.toString(), normalFont));
-        signCell.setBorder(Rectangle.BOX);
+        signCell.setBorder(Rectangle.NO_BORDER);
         signCell.setPadding(5);
         signCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        bottomTable.addCell(signCell);
+        rightContent.addCell(signCell);
+        
+        PdfPCell rightCell = new PdfPCell(rightContent);
+        rightCell.setBorder(Rectangle.BOX);
+        rightCell.setPadding(0);
+        bottomTable.addCell(rightCell);
         
         document.add(bottomTable);
         
