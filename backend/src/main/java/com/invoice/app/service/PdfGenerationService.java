@@ -28,9 +28,43 @@ public class PdfGenerationService {
 
             // Fonts
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            Font companyNameFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
             Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 11);
             Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
             Font smallFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+
+            // Company Header
+            Paragraph companyName = new Paragraph("SHRIRAM LOGISTICS", companyNameFont);
+            companyName.setAlignment(Element.ALIGN_CENTER);
+            document.add(companyName);
+
+            Paragraph companyAddress = new Paragraph("No. 66/1, Mettu Street, Kaladipet, Chennai - 600 019", normalFont);
+            companyAddress.setAlignment(Element.ALIGN_CENTER);
+            document.add(companyAddress);
+
+            Paragraph companyContact = new Paragraph("Contact: 044 - 4213 3684  |  E-Mail: shriramlogics@gmail.com", smallFont);
+            companyContact.setAlignment(Element.ALIGN_CENTER);
+            document.add(companyContact);
+
+            Paragraph companyState = new Paragraph("State: Tamil Nadu", smallFont);
+            companyState.setAlignment(Element.ALIGN_CENTER);
+            document.add(companyState);
+
+            Paragraph companyGst = new Paragraph("GSTIN: 33AJBPM6638G1ZA  |  PAN No: AJBPM6638G", smallFont);
+            companyGst.setAlignment(Element.ALIGN_CENTER);
+            companyGst.setSpacingAfter(15);
+            document.add(companyGst);
+
+            // Horizontal line separator
+            PdfPTable separatorTable = new PdfPTable(1);
+            separatorTable.setWidthPercentage(100);
+            PdfPCell separatorCell = new PdfPCell();
+            separatorCell.setBorder(Rectangle.BOTTOM);
+            separatorCell.setBorderWidth(1f);
+            separatorCell.setFixedHeight(2f);
+            separatorTable.addCell(separatorCell);
+            separatorTable.setSpacingAfter(10);
+            document.add(separatorTable);
 
             // Title
             Paragraph title = new Paragraph("TRANSPORT INVOICE", titleFont);
