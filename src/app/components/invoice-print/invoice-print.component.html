@@ -49,11 +49,13 @@
       <tbody>
         <tr *ngFor="let item of invoice.items; let i = index">
           <td class="item-cell">
-            <div class="item-number">
-              {{ i + 1 }} Transportation Charges
-              <span class="vehicle-info" *ngIf="item.vehicleNumber || item.vehicleType">
-                <span *ngIf="item.vehicleNumber">| Vehicle No: {{ item.vehicleNumber }}</span>
-                <span *ngIf="item.vehicleType">{{ item.vehicleNumber ? ' ' : '' }}| Vehicle Type: {{ item.vehicleType }}</span>
+            <div class="item-header-row">
+              <span class="item-number">{{ i + 1 }} Transportation Charges</span>
+              <span class="vehicle-info-section" *ngIf="item.vehicleNumber || item.vehicleType">
+                <span class="vehicle-separator"></span>
+                <span class="vehicle-detail" *ngIf="item.vehicleNumber">Vehicle No: {{ item.vehicleNumber }}</span>
+                <span class="vehicle-separator" *ngIf="item.vehicleNumber && item.vehicleType"></span>
+                <span class="vehicle-detail" *ngIf="item.vehicleType">Vehicle Type: {{ item.vehicleType }}</span>
               </span>
             </div>
             <table class="lr-table">
