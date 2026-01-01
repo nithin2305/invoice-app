@@ -17,9 +17,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findByInvoiceNoContainingIgnoreCase(String invoiceNo);
 
-    @Query("SELECT DISTINCT i FROM Invoice i LEFT JOIN i.items it " +
-           "WHERE (:invoiceNo IS NULL OR LOWER(i.invoiceNo) LIKE LOWER(CONCAT('%', :invoiceNo, '%'))) " +
-           "AND (:lrNo IS NULL OR LOWER(it.lrNo) LIKE LOWER(CONCAT('%', :lrNo, '%')))")
+    @Query(value = "SELECT DISTINCT i.* FROM invoices i LEFT JOIN invoice_items it ON i.id = it.invoice_id " +
+           "WHERE (:invoiceNo IS NULL OR i.invoice_no LIKE '%' || CAST(:invoiceNo AS TEXT) || '%') " +
+           "AND (:lrNo IS NULL OR LOWER(it.lr_no) LIKE LOWER('%' || CAST(:lrNo AS TEXT) || '%'))", 
+           nativeQuery = true)
     List<Invoice> searchInvoices(@Param("invoiceNo") String invoiceNo, @Param("lrNo") String lrNo);
 
     @Query("SELECT i FROM Invoice i WHERE i.invoiceDate BETWEEN :startDate AND :endDate ORDER BY i.invoiceDate")
