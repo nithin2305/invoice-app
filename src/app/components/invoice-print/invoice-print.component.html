@@ -52,8 +52,8 @@
             <div class="item-number">
               {{ i + 1 }} Transportation Charges
               <span class="vehicle-info" *ngIf="item.vehicleNumber || item.vehicleType">
-                <span *ngIf="item.vehicleNumber"> | Vehicle No: {{ item.vehicleNumber }}</span>
-                <span *ngIf="item.vehicleType"> | Vehicle Type: {{ item.vehicleType }}</span>
+                <span *ngIf="item.vehicleNumber">| Vehicle No: {{ item.vehicleNumber }}</span>
+                <span *ngIf="item.vehicleType">{{ item.vehicleNumber ? ' ' : '' }}| Vehicle Type: {{ item.vehicleType }}</span>
               </span>
             </div>
             <table class="lr-table">
@@ -106,7 +106,7 @@
     <!-- Total -->
     <div class="total-row">
       <span class="total-label">TOTAL</span>
-      <span class="total-amount">{{ formatAmount(invoice.totalAmount || getItemsTotal()) }}</span>
+      <span class="total-amount">{{ formatAmount(invoice.totalAmount || getCalculatedTotal()) }}</span>
     </div>
 
     <!-- Amount in Words -->

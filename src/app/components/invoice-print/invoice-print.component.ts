@@ -114,6 +114,14 @@ export class InvoicePrintComponent implements OnInit {
     return this.invoice.items.reduce((sum: number, item: InvoiceItem) => sum + (item.amount || 0), 0);
   }
 
+  getCalculatedTotal(): number {
+    const itemsTotal = this.getItemsTotal();
+    const haltingCharges = this.invoice?.haltingCharges || 0;
+    const loadingCharges = this.invoice?.loadingCharges || 0;
+    const unloadingCharges = this.invoice?.unloadingCharges || 0;
+    return itemsTotal + haltingCharges + loadingCharges + unloadingCharges;
+  }
+
   hasAdditionalCharges(): boolean {
     return !!(this.invoice?.haltingCharges || this.invoice?.loadingCharges || this.invoice?.unloadingCharges);
   }
