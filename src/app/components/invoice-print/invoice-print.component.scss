@@ -19,7 +19,7 @@
   border: 1px solid #ccc;
   font-family: Arial, sans-serif;
   font-size: 10px;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 /* Copy Type */
@@ -34,7 +34,7 @@
 /* Company Header */
 .company-header {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .company-name {
@@ -61,7 +61,7 @@
 /* Invoice Title */
 .invoice-title-box {
   text-align: center;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .invoice-title-box span {
@@ -75,23 +75,23 @@
 .main-section {
   display: flex;
   border: 1px solid #000;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .party-details {
   flex: 2;
-  padding: 8px;
+  padding: 10px;
   border-right: 1px solid #000;
 }
 
 .party-name {
   font-weight: bold;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .party-address {
   white-space: pre-line;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .party-gst {
@@ -100,15 +100,23 @@
 
 .invoice-details {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
   font-size: 9px;
+}
+
+.invoice-no {
+  margin-bottom: 8px;
+}
+
+.invoice-date {
+  margin-top: 8px;
 }
 
 /* Content Table */
 .content-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .content-table th,
@@ -132,18 +140,25 @@
 }
 
 .item-cell {
-  padding: 8px;
+  padding: 10px;
   vertical-align: top;
 }
 
 .item-number {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.vehicle-info {
+  font-weight: normal;
+  font-size: 9px;
+  margin-left: 5px;
 }
 
 .lr-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 5px 0;
+  margin: 8px 0;
   font-size: 8px;
 }
 
@@ -159,12 +174,6 @@
   font-weight: normal;
 }
 
-.vehicle-type {
-  text-align: right;
-  font-size: 8px;
-  margin-top: 5px;
-}
-
 .amount-cell {
   text-align: right;
   vertical-align: top;
@@ -176,7 +185,37 @@
   text-align: center;
   border: 1px solid #000;
   border-top: none;
-  padding: 5px;
+  padding: 6px;
+  font-size: 9px;
+}
+
+/* Additional Charges */
+.additional-charges {
+  border: 1px solid #000;
+  border-top: none;
+}
+
+.charge-row {
+  display: flex;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.charge-row:last-child {
+  border-bottom: none;
+}
+
+.charge-label {
+  flex: 85%;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 9px;
+}
+
+.charge-amount {
+  flex: 15%;
+  text-align: right;
+  font-weight: bold;
   font-size: 9px;
 }
 
@@ -204,7 +243,23 @@
 
 /* Amount in Words */
 .amount-words {
-  margin: 10px 0;
+  margin: 15px 0;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+/* GST Notice Section */
+.gst-notice-section {
+  border: 1px solid #000;
+  border-bottom: none;
+  padding: 8px;
+  text-align: center;
+  margin-bottom: 0;
+  background: #f9f9f9;
+}
+
+.gst-notice-text {
+  font-weight: bold;
   font-size: 9px;
 }
 
@@ -212,39 +267,35 @@
 .bottom-section {
   display: flex;
   border: 1px solid #000;
-  margin: 10px 0;
+  margin: 0 0 15px 0;
 }
 
 .bank-details {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
   border-right: 1px solid #000;
   font-size: 8px;
 }
 
 .bank-title {
   font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.gst-note-small {
-  margin-bottom: 10px;
-  font-size: 8px;
+  margin-bottom: 8px;
 }
 
 .bank-info {
   font-size: 8px;
+  line-height: 1.8;
 }
 
 .signature-section {
   flex: 1;
-  padding: 8px;
+  padding: 10px;
   text-align: center;
 }
 
 .for-company {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .signature-space {
@@ -258,14 +309,15 @@
 /* Declaration */
 .declaration {
   font-size: 8px;
-  margin: 10px 0;
+  margin: 15px 0;
+  line-height: 1.6;
 }
 
 /* Jurisdiction */
 .jurisdiction {
   text-align: center;
   font-size: 8px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 /* Loading/Error States */
