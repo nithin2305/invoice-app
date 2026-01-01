@@ -54,8 +54,11 @@ export class InvoicePrintComponent implements OnInit {
       partyName: 'GERMAN POLYMERS AND COATINGS PVTE LIMITED',
       partyAddress: 'No. 18 Othivakkam SF No.82/1,88/6B,100/F, 1G,3,4,\nKumuzhi Vullage, Vandalur Taluk\nChengalpattu Dist -603202',
       partyGst: '33AABCG1253F1Z7',
-      totalAmount: 14000,
-      amountInWords: 'RUPEES FOURTEEN THOUSAND ONLY',
+      haltingCharges: 500,
+      loadingCharges: 1000,
+      unloadingCharges: 1500,
+      totalAmount: 17000,
+      amountInWords: 'RUPEES SEVENTEEN THOUSAND ONLY',
       items: [{
         lrNo: '3069',
         lrDate: '2025-12-18',
@@ -63,6 +66,7 @@ export class InvoicePrintComponent implements OnInit {
         toLocation: 'SRIPERAMBADUR',
         goodsDescription: 'MODULE MOUNTING',
         packageType: 'AS PER INVOICE',
+        vehicleNumber: 'TN01AB1234',
         vehicleType: '40FT',
         amount: 14000
       }]
@@ -108,5 +112,17 @@ export class InvoicePrintComponent implements OnInit {
   getItemsTotal(): number {
     if (!this.invoice?.items) return 0;
     return this.invoice.items.reduce((sum: number, item: InvoiceItem) => sum + (item.amount || 0), 0);
+  }
+
+  getCalculatedTotal(): number {
+    const itemsTotal = this.getItemsTotal();
+    const haltingCharges = this.invoice?.haltingCharges || 0;
+    const loadingCharges = this.invoice?.loadingCharges || 0;
+    const unloadingCharges = this.invoice?.unloadingCharges || 0;
+    return itemsTotal + haltingCharges + loadingCharges + unloadingCharges;
+  }
+
+  hasAdditionalCharges(): boolean {
+    return !!(this.invoice?.haltingCharges || this.invoice?.loadingCharges || this.invoice?.unloadingCharges);
   }
 }
