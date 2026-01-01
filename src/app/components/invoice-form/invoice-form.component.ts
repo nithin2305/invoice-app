@@ -4,6 +4,7 @@ import { InvoiceService, Invoice, InvoiceItem, Client } from '../../services/inv
 import { Subject, Observable, of, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { amountToWords } from '../../utils/number-to-words.util';
 
 @Component({
   selector: 'app-invoice-form',
@@ -207,6 +208,8 @@ export class InvoiceFormComponent implements OnInit, OnDestroy {
   syncTotalBeforeSave() {
     // populate totalAmount on payload
     this.invoice.totalAmount = this.grandTotal;
+    // populate amountInWords based on total amount
+    this.invoice.amountInWords = amountToWords(this.grandTotal);
   }
 
   save() {
